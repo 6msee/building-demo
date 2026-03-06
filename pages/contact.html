@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ติดต่อ | กองอาคารสถานที่ มหาวิทยาลัยพะเยา</title>
+  <meta name="description" content="ช่องทางติดต่อกองอาคารสถานที่ มหาวิทยาลัยพะเยา" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">ข้ามไปยังเนื้อหาหลัก</a>
+  <header class="site-header">
+    <div class="navbar-wrap navbar-wrap--solid" data-navbar>
+      <div class="container navbar">
+        <a href="../index.html" class="brand" aria-label="กองอาคารสถานที่ มหาวิทยาลัยพะเยา">
+          <span class="brand__mark"><i class="fa-solid fa-building-shield"></i></span>
+          <span class="brand__text"><strong>กองอาคารสถานที่</strong><span>มหาวิทยาลัยพะเยา</span></span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="เปิดเมนู"><i class="fa-solid fa-bars"></i></button>
+        <nav id="primary-menu" class="nav-menu" aria-label="เมนูหลัก">
+          <a href="../index.html" data-nav>หน้าแรก</a>
+          <a href="about.html" data-nav>เกี่ยวกับ</a>
+          <a href="services.html" data-nav>ภารกิจ</a>
+          <a href="news.html" data-nav>ข่าวสาร</a>
+          <a href="contact.html" data-nav>ติดต่อ</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="page-hero page-hero--contact">
+      <div class="container reveal">
+        <span class="eyebrow">Contact</span>
+        <h1>ติดต่อกองอาคารสถานที่</h1>
+        <p class="page-hero__lead">ข้อมูลติดต่อจริงของกองอาคารสถานที่ มหาวิทยาลัยพะเยา พร้อมแบบฟอร์มตัวอย่างสำหรับต่อยอดระบบรับเรื่อง</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container contact-grid">
+        <article class="contact-card reveal">
+          <h2>ช่องทางติดต่อ</h2>
+          <ul class="contact-list">
+            <li><i class="fa-solid fa-phone"></i> <span>054-466-666 ต่อ 1060</span></li>
+            <li><i class="fa-solid fa-envelope"></i> <span>building@up.ac.th</span></li>
+            <li><i class="fa-solid fa-location-dot"></i> <span>19 หมู่ 2 ตำบลแม่กา อำเภอเมืองพะเยา จังหวัดพะเยา 56000</span></li>
+            <li><i class="fa-solid fa-globe"></i> <span>building.up.ac.th</span></li>
+          </ul>
+        </article>
+
+        <article class="contact-card reveal">
+          <h2>แบบฟอร์มตัวอย่าง</h2>
+          <form class="contact-form" action="#" method="post" onsubmit="return false">
+            <label>
+              <span>ชื่อ - สกุล</span>
+              <input type="text" name="name" placeholder="กรอกชื่อของคุณ" />
+            </label>
+            <label>
+              <span>อีเมล</span>
+              <input type="email" name="email" placeholder="name@example.com" />
+            </label>
+            <label>
+              <span>หัวข้อ</span>
+              <input type="text" name="subject" placeholder="เรื่องที่ต้องการติดต่อ" />
+            </label>
+            <label>
+              <span>รายละเอียด</span>
+              <textarea name="message" rows="5" placeholder="พิมพ์รายละเอียด"></textarea>
+            </label>
+            <button class="button" type="submit"><i class="fa-solid fa-paper-plane"></i> ส่งข้อมูล</button>
+          </form>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-bottom footer-bottom--single">
+      <p>© 2026 กองอาคารสถานที่ มหาวิทยาลัยพะเยา</p>
+      <a href="../index.html" class="back-top"><i class="fa-solid fa-house"></i> กลับหน้าแรก</a>
+    </div>
+  </footer>
+  <script src="../js/app.js" defer></script>
+</body>
+</html>
