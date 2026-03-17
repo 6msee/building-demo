@@ -98,23 +98,31 @@ function setStatus(msg, error=false) {
   el.style.background = error ? "#ffd6d6" : "#e6f0ff";
 }
 
-// ===== LOAD DATA =====
 function load() {
   const sheet = document.getElementById("sheet").value;
 
   setStatus("🔄 โหลดข้อมูล...");
 
   fetch(API + "?sheet=" + sheet)
-    .then(res => res.json())
-    .then(data => {
-      dataAll = data;
-      page = 1;
-      render();
-      setStatus("✅ โหลดสำเร็จ (" + data.length + " รายการ)");
+    .then(res => res.text()) // 🔥 เปลี่ยนเป็น text ก่อน
+    .then(text => {
+      console.log("RAW:", text); // debug
+
+      try {
+        const data = JSON.parse(text); // 🔥 parse เอง
+
+        dataAll = data;
+        page = 1;
+        render();
+        setStatus("✅ โหลดสำเร็จ (" + data.length + " รายการ)");
+      } catch (e) {
+        setStatus("❌ API ไม่ได้ส่ง JSON", true);
+        console.error("NOT JSON:", text);
+      }
     })
     .catch(err => {
       console.error(err);
-      setStatus("❌ โหลดไม่สำเร็จ", true);
+      setStatus("❌ โหลดล้มเหลว", true);
     });
 }
 
@@ -175,8 +183,6 @@ function save() {
     send(data);
   }
 }
-
-// ===== SEND =====
 function send(data) {
   setStatus("📤 กำลังบันทึก...");
 
@@ -187,18 +193,25 @@ function send(data) {
     },
     body: JSON.stringify(data)
   })
-  .then(res => res.json())
-  .then(res => {
-    console.log(res);
+  .then(res => res.text()) // 🔥 เปลี่ยนเป็น text
+  .then(text => {
+    console.log("RAW:", text);
 
-    if (res.status) {
-      setStatus("✅ บันทึกสำเร็จ");
-    } else {
-      setStatus("⚠️ API ผิดปกติ", true);
+    try {
+      const res = JSON.parse(text);
+
+      if (res.status) {
+        setStatus("✅ บันทึกสำเร็จ");
+      } else {
+        setStatus("⚠️ API ผิดปกติ", true);
+      }
+
+      resetForm();
+      load();
+    } catch (e) {
+      setStatus("❌ API ไม่ได้ส่ง JSON", true);
+      console.error("NOT JSON:", text);
     }
-
-    resetForm();
-    load();
   })
   .catch(err => {
     console.error(err);
