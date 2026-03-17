@@ -3,283 +3,928 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>กองอาคารสถานที่ มหาวิทยาลัยพะเยา</title>
-  <meta name="description" content="เว็บไซต์ตัวอย่างกองอาคารสถานที่ มหาวิทยาลัยพะเยา พร้อมข้อมูลหน่วยงาน วิสัยทัศน์ ภารกิจ ข่าวสาร และช่องทางติดต่อ" />
-  <meta name="theme-color" content="#0a49b7" />
-  <meta name="color-scheme" content="light" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="กองอาคารสถานที่ มหาวิทยาลัยพะเยา" />
-  <meta property="og:description" content="Division of Building and Facilities, University of Phayao" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" />
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet" />
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <link rel="stylesheet" href="css/styles.css" />
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "กองอาคารสถานที่ มหาวิทยาลัยพะเยา",
-    "url": "https://building.up.ac.th/",
-    "email": "building@up.ac.th",
-    "telephone": "+66-54-466-666",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "19 หมู่ 2 ตำบลแม่กา",
-      "addressLocality": "อำเภอเมืองพะเยา",
-      "addressRegion": "พะเยา",
-      "postalCode": "56000",
-      "addressCountry": "TH"
+  <title>AI กับงานพยาบาลยุคดิจิทัล</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    :root{
+      --bg:#f6f9fc;
+      --panel:#ffffff;
+      --soft:#eef5fb;
+      --soft-2:#f9fbfd;
+      --primary:#1368b3;
+      --primary-2:#5aa4e8;
+      --text:#25435a;
+      --muted:#70879c;
+      --line:#dbe7f1;
+      --ok:#ecf8f1;
+      --warn:#fff8e7;
+      --shadow:0 12px 30px rgba(26,72,111,.08);
+      --radius:18px;
+      --sidebar-w:290px;
     }
-  }
-  </script>
+
+    *{box-sizing:border-box;scroll-behavior:smooth;}
+    html{scroll-padding-top:24px;}
+    body{
+      margin:0;
+      font-family:"Kanit",sans-serif;
+      font-weight:300;
+      background:linear-gradient(180deg,#f9fbfe 0%, #eef5fb 100%);
+      color:var(--text);
+      line-height:1.75;
+    }
+
+    img{max-width:100%;display:block;}
+    a{text-decoration:none;color:inherit;}
+
+    .layout{
+      display:grid;
+      grid-template-columns:var(--sidebar-w) 1fr;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:auto;
+      padding:18px 16px 20px;
+      background:rgba(255,255,255,.9);
+      border-right:1px solid var(--line);
+      backdrop-filter:blur(12px);
+    }
+
+    .brand{
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;
+      border-radius:22px;
+      padding:18px;
+      margin-bottom:14px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand-icon{
+      width:44px;height:44px;border-radius:14px;
+      background:rgba(255,255,255,.16);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:10px;font-size:1.1rem;
+    }
+
+    .brand h1{
+      margin:0 0 4px;
+      font-size:1.15rem;
+      line-height:1.4;
+      font-weight:600;
+    }
+
+    .brand p{margin:0;font-size:.92rem;opacity:.95;}
+
+    .menu-box{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+      margin-bottom:12px;
+      box-shadow:var(--shadow);
+    }
+
+    .menu-title{
+      margin:0 0 8px;
+      color:var(--primary);
+      font-size:.92rem;
+      font-weight:600;
+      display:flex;align-items:center;gap:8px;
+    }
+
+    .menu{display:grid;gap:6px;}
+    .menu a{
+      display:block;
+      padding:9px 10px 9px 12px;
+      border-radius:12px;
+      font-size:.93rem;
+      color:var(--text);
+      border:1px solid transparent;
+      transition:.2s ease;
+      position:relative;
+    }
+
+    .menu a::before{
+      content:"";
+      position:absolute;
+      left:0;top:10px;bottom:10px;
+      width:3px;border-radius:999px;
+      background:transparent;
+      transition:.2s ease;
+    }
+
+    .menu a:hover{
+      background:#f7fbff;
+      border-color:#d7e7f5;
+      color:var(--primary);
+    }
+
+    .menu a.active{
+      background:#edf6ff;
+      border-color:#d2e6f8;
+      color:var(--primary);
+      font-weight:500;
+    }
+
+    .menu a.active::before{background:var(--primary);}
+
+    .content{padding:22px 26px 36px;}
+
+    .hero{
+      background:linear-gradient(135deg,#156ab5 0%, #5aa4e8 100%);
+      color:#fff;
+      padding:28px 30px;
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
+    }
+
+    .hero h2{
+      margin:0 0 10px;
+      font-size:clamp(1.75rem,3vw,2.5rem);
+      line-height:1.3;
+      font-weight:700;
+    }
+
+    .hero p{margin:8px 0;max-width:980px;}
+
+    .hero-tags{
+      display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;
+    }
+
+    .hero-tags span{
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.24);
+      padding:7px 11px;border-radius:999px;font-size:.9rem;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+
+    .section{margin-bottom:22px;}
+
+    .section-head{
+      display:flex;gap:14px;align-items:flex-start;
+      margin-bottom:14px;
+    }
+
+    .section-badge{
+      min-width:48px;height:48px;border-radius:15px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;font-weight:700;box-shadow:var(--shadow);
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:1.55rem;
+      line-height:1.35;
+      font-weight:700;
+      color:var(--text);
+    }
+
+    .section-head p{margin:5px 0 0;color:var(--muted);}
+
+    .grid-2,.grid-3{display:grid;gap:16px;}
+    .grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+    .grid-3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .card.ok{background:var(--ok);}
+    .card.warn{background:var(--warn);}
+    .card.soft{background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);}
+
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:5px 10px;border-radius:999px;
+      background:#eef6ff;color:var(--primary);
+      border:1px solid #d8e9f8;
+      font-size:.86rem;font-weight:500;margin-bottom:10px;
+    }
+
+    .card h3{margin:0 0 8px;font-size:1.08rem;font-weight:600;line-height:1.45;}
+    .card h4{margin:14px 0 8px;font-size:.98rem;font-weight:500;}
+    .card p{margin:8px 0;}
+
+    ul{margin:8px 0 0 18px;padding:0;}
+    li{margin-bottom:6px;}
+
+    .timeline{display:grid;gap:10px;}
+    .timeline-item{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px 15px;
+      display:flex;gap:12px;align-items:flex-start;
+      box-shadow:var(--shadow);
+    }
+
+    .timeline-icon{
+      width:36px;height:36px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;color:#fff;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+    }
+
+    .timeline-item strong{font-weight:600;color:var(--text);}
+
+    .table-wrap{
+      overflow:auto;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+    }
+
+    table{width:100%;border-collapse:collapse;min-width:760px;}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;}
+    th{background:#eef6ff;font-weight:600;color:var(--text);}
+
+    .code-box{
+      background:#0f2233;color:#eaf4fb;
+      border:1px solid #23445f;
+      border-radius:16px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      overflow:auto;white-space:pre-wrap;
+      font-family:Consolas, Monaco, monospace;
+      font-size:.88rem;line-height:1.65;
+    }
+
+    .note{
+      background:#fffdf3;border:1px solid #efe0a5;color:#755f15;
+      border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);
+    }
+
+    .image-card{
+      overflow:hidden;padding:0;
+    }
+
+    .image-card img{
+      width:100%;height:200px;object-fit:cover;
+    }
+
+    .image-card .image-body{padding:16px 18px 18px;}
+
+    .demo-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;}
+    .demo-box{
+      background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);
+    }
+
+    .demo-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+    button{
+      border:none;background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:#fff;padding:10px 14px;border-radius:12px;font-family:inherit;font-size:.94rem;cursor:pointer;
+      box-shadow:var(--shadow);
+    }
+
+    button.secondary{background:#eef6ff;color:var(--primary);border:1px solid #d4e8fa;box-shadow:none;}
+
+    .news-list{display:grid;gap:10px;}
+    .news-item{
+      border:1px solid var(--line);border-radius:14px;padding:13px;background:#fbfdff;
+    }
+
+    .news-item h4{margin:0 0 6px;font-size:1rem;font-weight:600;color:var(--text);}
+    .news-item p{margin:0 0 6px;font-size:.94rem;color:var(--muted);line-height:1.6;}
+    .news-item small{color:var(--primary);font-weight:500;}
+
+    .footer{
+      margin-top:28px;background:#fff;border:1px solid var(--line);
+      border-radius:18px;padding:20px;box-shadow:var(--shadow);
+    }
+
+    @media (max-width:1100px){
+      .demo-grid{grid-template-columns:1fr;}
+    }
+
+    @media (max-width:980px){
+      .layout{grid-template-columns:1fr;}
+      .sidebar{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--line);}
+      .content{padding:18px;}
+      .menu a.active::before{display:none;}
+    }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">ข้ามไปยังเนื้อหาหลัก</a>
-
-  <header class="site-header" id="top">
-    <div class="topbar">
-      <div class="container topbar__inner">
-        <p><i class="fa-solid fa-phone"></i> 054-466-666 ต่อ 1060</p>
-        <p><i class="fa-solid fa-envelope"></i> building@up.ac.th</p>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon"><i class="fa-solid fa-laptop-medical"></i></div>
+        <h1>AI กับงานพยาบาลยุคดิจิทัล</h1>
+        <p>สื่อการสอนหน้าเดียว พร้อมเมนูซ้ายไฮไลต์หัวข้ออัตโนมัติ</p>
       </div>
-    </div>
 
-    <div class="navbar-wrap" data-navbar>
-      <div class="container navbar">
-        <a href="index.html" class="brand" aria-label="กองอาคารสถานที่ มหาวิทยาลัยพะเยา">
-          <span class="brand__mark"><i class="fa-solid fa-building-shield"></i></span>
-          <span class="brand__text">
-            <strong>กองอาคารสถานที่</strong>
-            <span>มหาวิทยาลัยพะเยา</span>
-          </span>
-        </a>
-
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="เปิดเมนู">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <nav id="primary-menu" class="nav-menu" aria-label="เมนูหลัก">
-          <a href="index.html" data-nav>หน้าแรก</a>
-          <a href="pages/about.html" data-nav>เกี่ยวกับ</a>
-          <a href="pages/services.html" data-nav>ภารกิจ</a>
-          <a href="pages/news.html" data-nav>ข่าวสาร</a>
-          <a href="pages/contact.html" data-nav>ติดต่อ</a>
+      <div class="menu-box">
+        <div class="menu-title"><i class="fa-solid fa-house"></i> ภาพรวม</div>
+        <nav class="menu">
+          <a href="#intro">บทนำ</a>
+          <a href="#goals">วัตถุประสงค์การสอน</a>
+          <a href="#schedule">โครงสร้างเวลา 3 ชั่วโมง</a>
         </nav>
       </div>
-    </div>
-  </header>
 
-  <main id="main-content">
-    <section class="hero hero--home section-dark">
-      <div class="container hero__grid">
-        <div class="hero__content reveal">
-          <span class="eyebrow">Division of Building and Facilities</span>
-          <h1>กองอาคารสถานที่<br />มหาวิทยาลัยพะเยา</h1>
-          <p class="hero__lead">
-            หน่วยงานสนับสนุนที่ดูแลอาคารสถานที่ ระบบสาธารณูปโภค ภูมิทัศน์ การอนุรักษ์พลังงาน
-            และสภาพแวดล้อมของมหาวิทยาลัยพะเยา เพื่อให้พื้นที่การเรียนรู้และการทำงานพร้อมใช้งานอย่างมีประสิทธิภาพ
-          </p>
-          <div class="button-row">
-            <a class="button magnetic" href="pages/services.html"><i class="fa-solid fa-arrow-right"></i> สำรวจภารกิจ</a>
-            <a class="button button--ghost magnetic" href="pages/contact.html"><i class="fa-solid fa-paper-plane"></i> ติดต่อหน่วยงาน</a>
-          </div>
-          <ul class="hero-points" aria-label="จุดเน้นของหน่วยงาน">
-            <li><i class="fa-solid fa-screwdriver-wrench"></i> บำรุงรักษาอาคารสถานที่</li>
-            <li><i class="fa-solid fa-plug-circle-bolt"></i> ระบบสาธารณูปโภค</li>
-            <li><i class="fa-solid fa-leaf"></i> สิ่งแวดล้อมและพลังงาน</li>
-          </ul>
-        </div>
-
-        <div class="hero__visual reveal parallax" data-parallax="0.09" aria-hidden="true">
-          <div class="orbital-frame"></div>
-          <article class="glass-card glass-card--hero">
-            <div class="wire-grid">
-              <div class="tower tower--one"></div>
-              <div class="tower tower--two"></div>
-              <div class="tower tower--three"></div>
-            </div>
-            <div class="glass-card__body">
-              <span class="badge"><i class="fa-solid fa-compass-drafting"></i> Smart Facility</span>
-              <h2>พื้นที่พร้อมใช้ งานพร้อมบริการ</h2>
-              <p>
-                ออกแบบโปรเจกต์เว็บให้ทันสมัย เบา และพร้อมขยายต่อเป็นระบบแจ้งซ่อม ข่าวประชาสัมพันธ์
-                และแดชบอร์ดข้อมูลในอนาคต
-              </p>
-            </div>
-          </article>
-          <div class="floating-pill floating-pill--pink"><i class="fa-solid fa-solar-panel"></i> Energy</div>
-          <div class="floating-pill floating-pill--blue"><i class="fa-solid fa-seedling"></i> Landscape</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container section-heading reveal">
-        <div>
-          <span class="eyebrow">Overview</span>
-          <h2>บทบาทของกองอาคารสถานที่</h2>
-        </div>
-        <p class="muted max-52">
-          กองอาคารสถานที่มีบทบาทสนับสนุนการบริหารจัดการพื้นที่ของมหาวิทยาลัย ตั้งแต่งานซ่อมบำรุง
-          ระบบสาธารณูปโภค สิ่งแวดล้อม การขนส่งภายในมหาวิทยาลัย ไปจนถึงการอนุรักษ์พลังงาน
-        </p>
+      <div class="menu-box">
+        <div class="menu-title"><i class="fa-solid fa-brain"></i> Session 1</div>
+        <nav class="menu">
+          <a href="#s1">ภาพรวม Session 1</a>
+          <a href="#s1-1">1.1 AI คืออะไร</a>
+          <a href="#s1-2">1.2 ประเภทของ AI</a>
+          <a href="#s1-3">1.3 AI ทำอะไรได้/ไม่ได้</a>
+          <a href="#s1-4">1.4 Prompt คืออะไร</a>
+          <a href="#s1-5">1.5 หลักการเขียน Prompt</a>
+          <a href="#s1-6">1.6 ข้อดี ข้อจำกัด ความเสี่ยง</a>
+          <a href="#s1-7">1.7 AI สำคัญกับงานพยาบาลอย่างไร</a>
+          <a href="#s1-8">1.8 ตัวอย่างการใช้ AI ในงานพยาบาล</a>
+          <a href="#s1-9">1.9 AI กับระบบสารสนเทศทางการพยาบาล</a>
+          <a href="#s1-10">1.10 จริยธรรมและความปลอดภัย</a>
+        </nav>
       </div>
 
-      <div class="container feature-grid">
-        <article class="feature-card reveal">
-          <span class="icon-wrap"><i class="fa-solid fa-building-user"></i></span>
-          <h3>บริหารจัดการอาคารสถานที่</h3>
-          <p>ดูแลอาคาร สภาพแวดล้อม และการใช้งานพื้นที่ให้สอดรับกับการเรียน การวิจัย และการบริการวิชาการ</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="icon-wrap"><i class="fa-solid fa-droplet"></i></span>
-          <h3>สาธารณูปโภคและโครงสร้างพื้นฐาน</h3>
-          <p>ดูแลระบบไฟฟ้า ประปา ระบบอาคาร และงานพัฒนาโครงสร้างพื้นฐานเพื่อการใช้งานอย่างต่อเนื่อง</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="icon-wrap"><i class="fa-solid fa-bus"></i></span>
-          <h3>บริการสนับสนุนภายในมหาวิทยาลัย</h3>
-          <p>สนับสนุนบริการสวัสดิการพื้นฐาน การขนส่งมวลชนภายใน และการจัดการระบบที่เกี่ยวข้องกับชีวิตประจำวัน</p>
-        </article>
-        <article class="feature-card reveal">
-          <span class="icon-wrap"><i class="fa-solid fa-recycle"></i></span>
-          <h3>สิ่งแวดล้อมและพลังงาน</h3>
-          <p>สนับสนุนการอนุรักษ์ทรัพยากรธรรมชาติ สิ่งแวดล้อม การคัดแยกขยะ และการจัดการพลังงานทดแทน</p>
-        </article>
+      <div class="menu-box">
+        <div class="menu-title"><i class="fa-solid fa-code"></i> Session 2</div>
+        <nav class="menu">
+          <a href="#s2">ภาพรวม Session 2</a>
+          <a href="#s2-1">2.1 เครื่องมือที่ใช้พัฒนา</a>
+          <a href="#s2-2">2.2 ภาษาที่ใช้</a>
+          <a href="#s2-3">2.3 หลักการออกแบบเว็บไซต์</a>
+          <a href="#s2-4">2.4 โครงสร้างและสถาปัตยกรรมเว็บ</a>
+          <a href="#s2-5">2.5 Google Sheet เป็นฐานข้อมูล</a>
+          <a href="#s2-6">2.6 การใช้ AI ช่วยเขียนโค้ด</a>
+          <a href="#s2-7">2.7 ขั้นตอนการสอนปฏิบัติ</a>
+          <a href="#s2-8">2.8 หน้าบ้านและหลังบ้าน</a>
+          <a href="#s2-9">2.9 Apps Script ตัวอย่าง</a>
+          <a href="#s2-10">2.10 ส่วนสาธิต fetch ใช้งานได้จริง</a>
+          <a href="#s2-11">2.11 กิจกรรมฝึกปฏิบัติ</a>
+          <a href="#s2-12">2.12 แนวทางต่อยอด</a>
+        </nav>
       </div>
-    </section>
+    </aside>
 
-    <section class="section section-band">
-      <div class="container split-grid split-grid--balanced">
-        <div class="reveal">
-          <span class="eyebrow">Vision</span>
-          <h2>วิสัยทัศน์และปณิธาน</h2>
-          <p class="lead-text">
-            มุ่งมั่นพัฒนาและบริหารจัดการอาคารสถานที่และโครงสร้างพื้นฐานอย่างมีประสิทธิภาพ
-            เพื่อสนับสนุนการพัฒนามหาวิทยาลัยให้ก้าวสู่ระดับสากล
-          </p>
-          <div class="quote-box">
-            <i class="fa-solid fa-quote-left"></i>
-            <p>พัฒนาสิ่งแวดล้อมให้เกิดความยั่งยืน</p>
-          </div>
+    <main class="content">
+      <section class="hero" id="intro">
+        <h2>AI กับงานพยาบาลยุคดิจิทัล และการพัฒนาระบบสารสนเทศทางการพยาบาล</h2>
+        <p>เอกสารนี้จัดทำเป็นสื่อการสอนแบบหน้าเว็บเดียวสำหรับใช้สอนจริง โดยแบ่งเนื้อหาเป็น 2 Session ชัดเจน ครอบคลุมตั้งแต่พื้นฐาน AI การเขียน Prompt การใช้ AI กับงานพยาบาล ไปจนถึงการพัฒนาเว็บไซต์และระบบข้อมูลอย่างง่ายสำหรับนำไปใช้ในหน่วยงาน</p>
+        <p>รูปแบบหน้าเว็บนี้ออกแบบให้เหมาะกับผู้สอน สามารถคลิกเมนูด้านซ้ายเพื่อเลื่อนตามหัวข้อได้ทันที และเมนูจะไฮไลต์หัวข้อที่กำลังอ่านอยู่โดยอัตโนมัติ</p>
+        <div class="hero-tags">
+          <span><i class="fa-solid fa-clock"></i> ใช้สอน 3 ชั่วโมง</span>
+          <span><i class="fa-solid fa-bars-progress"></i> เมนูซ้ายไฮไลต์อัตโนมัติ</span>
+          <span><i class="fa-solid fa-image"></i> มีภาพประกอบบางหัวข้อ</span>
+          <span><i class="fa-solid fa-link"></i> มีส่วนสาธิต fetch ใช้งานได้จริง</span>
         </div>
+      </section>
 
-        <div class="stack-cards reveal">
-          <article class="mini-panel">
-            <h3>แนวคิดการดำเนินงาน</h3>
-            <p>เชื่อมโยงงานด้านอาคาร พลังงาน ภูมิทัศน์ และสิ่งแวดล้อมเข้าด้วยกันในมุมมองของการพัฒนาพื้นที่อย่างยั่งยืน</p>
-          </article>
-          <article class="mini-panel">
-            <h3>การต่อยอดเว็บไซต์</h3>
-            <p>โครงสร้างนี้พร้อมขยายเป็นระบบแจ้งซ่อม ปฏิทินงานบำรุงรักษา ฐานความรู้ และประกาศประชาสัมพันธ์ได้ทันที</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container section-heading reveal">
-        <div>
-          <span class="eyebrow">Services</span>
-          <h2>บริการเด่นในเว็บไซต์เวอร์ชันนี้</h2>
-        </div>
-      </div>
-
-      <div class="container service-showcase">
-        <article class="service-showcase__main reveal">
+      <section class="section" id="goals">
+        <div class="section-head">
+          <div class="section-badge"><i class="fa-solid fa-bullseye"></i></div>
           <div>
-            <span class="badge badge--light"><i class="fa-solid fa-clipboard-list"></i> Web Project Ready</span>
-            <h3>หน้าเว็บพร้อมใช้งานแบบองค์กร</h3>
-            <p>
-              หน้าแรกและหน้าภายในถูกแยกเป็นไฟล์อย่างเป็นระบบ พร้อมเมนูนำทาง เอฟเฟกต์เลื่อนที่นุ่มนวล
-              การ์ดเนื้อหาแบบโมเดิร์น และโครงสร้าง semantic HTML เพื่อรองรับ SEO และการเข้าถึง
-            </p>
+            <h2>วัตถุประสงค์การสอน</h2>
+            <p>กำหนดผลลัพธ์การเรียนรู้ให้ชัดในด้านความรู้ ทักษะ และการประยุกต์ใช้จริงในหน่วยงาน</p>
           </div>
-          <ul class="check-list">
-            <li><i class="fa-solid fa-circle-check"></i> รองรับมือถือ แท็บเล็ต และเดสก์ท็อป</li>
-            <li><i class="fa-solid fa-circle-check"></i> ใช้ Kanit 300 และ Font Awesome ตามโจทย์</li>
-            <li><i class="fa-solid fa-circle-check"></i> เตรียมส่วนข่าวสารและข้อมูลติดต่อจริงของหน่วยงาน</li>
-          </ul>
-        </article>
-
-        <div class="service-showcase__side">
-          <article class="info-card reveal">
-            <h3>หน้า About</h3>
-            <p>รวมประวัติ วิสัยทัศน์ ปณิธาน และขอบเขตหน้าที่ของกองอาคารสถานที่</p>
-          </article>
-          <article class="info-card reveal">
-            <h3>หน้า Services</h3>
-            <p>แยกภารกิจและโครงสร้างบริการให้อ่านง่าย พร้อมไอคอนและเลย์เอาต์แบบมืออาชีพ</p>
-          </article>
-          <article class="info-card reveal">
-            <h3>หน้า Contact</h3>
-            <p>แสดงที่อยู่ เบอร์โทร อีเมล และแบบฟอร์มตัวอย่างสำหรับเชื่อมระบบจริงภายหลัง</p>
-          </article>
         </div>
-      </div>
-    </section>
-
-    <section class="section section-dark section-dark--compact">
-      <div class="container cta-panel reveal">
-        <div>
-          <span class="eyebrow eyebrow--light">Professional Setup</span>
-          <h2>พร้อมนำไปพัฒนาต่อเป็นเว็บไซต์ทางการ</h2>
-          <p>
-            โปรเจกต์นี้ออกแบบให้เป็นฐานเริ่มต้นที่ดีสำหรับเว็บกองอาคารสถานที่ของมหาวิทยาลัยพะเยา
-            โดยแยกไฟล์อย่างชัดเจนและพร้อมต่อยอดด้านเนื้อหา ระบบงาน และการเชื่อมบริการออนไลน์
-          </p>
+        <div class="grid-3">
+          <div class="card soft">
+            <div class="eyebrow"><i class="fa-solid fa-book-open"></i> ด้านความรู้</div>
+            <ul>
+              <li>เข้าใจความหมายของ AI และพื้นฐานการทำงานในภาพรวม</li>
+              <li>รู้จักประเภทของ AI ที่พบได้บ่อยในการใช้งานจริง</li>
+              <li>เข้าใจข้อดี ข้อจำกัด และความเสี่ยงของ AI</li>
+            </ul>
+          </div>
+          <div class="card soft">
+            <div class="eyebrow"><i class="fa-solid fa-keyboard"></i> ด้านทักษะ</div>
+            <ul>
+              <li>เขียน Prompt ได้ชัดเจนและเหมาะกับบริบทงานพยาบาล</li>
+              <li>ใช้ AI ช่วยสรุป วิเคราะห์ และร่างเนื้อหาได้</li>
+              <li>ใช้ AI ช่วยสร้างต้นแบบเว็บไซต์หรือระบบข้อมูลได้</li>
+            </ul>
+          </div>
+          <div class="card soft">
+            <div class="eyebrow"><i class="fa-solid fa-hospital"></i> ด้านการประยุกต์ใช้</div>
+            <ul>
+              <li>เห็นโอกาสใช้ AI กับงานพยาบาลยุคดิจิทัล</li>
+              <li>เข้าใจการพัฒนาเว็บไซต์แผนกและระบบข่าวสารแบบง่าย</li>
+              <li>เริ่มต้นใช้ Google Sheet และ Apps Script กับงานจริงได้</li>
+            </ul>
+          </div>
         </div>
-        <div class="button-row">
-          <a class="button magnetic" href="pages/about.html"><i class="fa-solid fa-id-card"></i> ดูข้อมูลหน่วยงาน</a>
-          <a class="button button--ghost magnetic" href="pages/contact.html"><i class="fa-solid fa-location-arrow"></i> ติดต่อหน่วยงาน</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <section>
-        <a href="index.html" class="brand brand--footer">
-          <span class="brand__mark"><i class="fa-solid fa-building-shield"></i></span>
-          <span class="brand__text">
-            <strong>กองอาคารสถานที่</strong>
-            <span>มหาวิทยาลัยพะเยา</span>
-          </span>
-        </a>
-        <p class="footer-copy">
-          ตัวอย่างโปรเจกต์เว็บไซต์สมัยใหม่สำหรับกองอาคารสถานที่ โดยใช้ข้อมูลหน่วยงานจริง และออกแบบให้พร้อมขยายต่อ
-        </p>
       </section>
 
-      <section>
-        <h3>เมนูหลัก</h3>
-        <ul class="footer-links">
-          <li><a href="pages/about.html">เกี่ยวกับหน่วยงาน</a></li>
-          <li><a href="pages/services.html">ภารกิจและบริการ</a></li>
-          <li><a href="pages/news.html">ข่าวสาร</a></li>
-          <li><a href="pages/contact.html">ติดต่อ</a></li>
+      <section class="section" id="schedule">
+        <div class="section-head">
+          <div class="section-badge"><i class="fa-solid fa-clock"></i></div>
+          <div>
+            <h2>โครงสร้างเวลาในการสอน 3 ชั่วโมง</h2>
+            <p>แบ่งเวลาให้ครอบคลุมทั้งภาคทฤษฎี ภาคปฏิบัติ และการสรุปผล</p>
+          </div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-play"></i></div><div><strong>00:00 - 00:15 น.</strong><br>นำเข้าสู่บทเรียน อธิบายภาพรวม AI และความเชื่อมโยงกับงานพยาบาลยุคดิจิทัล</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-brain"></i></div><div><strong>00:15 - 01:15 น.</strong><br>Session 1: พื้นฐาน AI การเขียน Prompt การใช้ AI กับงานพยาบาล และประเด็นจริยธรรม/ความปลอดภัย</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-mug-hot"></i></div><div><strong>01:15 - 01:25 น.</strong><br>พักและถามตอบ</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-code"></i></div><div><strong>01:25 - 02:45 น.</strong><br>Session 2: ฝึกพัฒนาเว็บไซต์แผนก การใช้ Google Sheet และ Google Apps Script เป็นระบบข้อมูลอย่างง่าย</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-flag-checkered"></i></div><div><strong>02:45 - 03:00 น.</strong><br>สรุปผล แนวทางต่อยอด และอภิปรายการใช้จริงในหน่วยงาน</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1">
+        <div class="section-head">
+          <div class="section-badge">1</div>
+          <div>
+            <h2>Session 1: รู้จัก AI เข้าใจพื้นฐาน AI การ Prompt และการใช้ AI กับงานพยาบาลยุคดิจิทัล</h2>
+            <p>Session นี้เป็นภาคความรู้พื้นฐาน เพื่อให้ผู้เรียนมีความเข้าใจที่ถูกต้องก่อนเข้าสู่การประยุกต์ใช้จริง</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="eyebrow"><i class="fa-solid fa-list-check"></i> เนื้อหาหลัก</div>
+            <ul>
+              <li>AI คืออะไร และทำงานอย่างไรในภาพรวม</li>
+              <li>ประเภทของ AI ที่พบได้บ่อยในงานจริง</li>
+              <li>AI ทำอะไรได้ และยังไม่ควรทำอะไรแทนคน</li>
+              <li>Prompt คืออะไร และหลักการเขียน Prompt ที่ดี</li>
+              <li>ข้อดี ข้อจำกัด และความเสี่ยงของ AI</li>
+              <li>AI สำคัญกับงานพยาบาลอย่างไร</li>
+              <li>ตัวอย่างการใช้ AI กับงานพยาบาลยุคดิจิทัล</li>
+              <li>AI กับการพัฒนาระบบสารสนเทศทางการพยาบาล</li>
+              <li>จริยธรรม ความปลอดภัย และ PDPA</li>
+            </ul>
+          </div>
+          <div class="card ok">
+            <div class="eyebrow"><i class="fa-solid fa-graduation-cap"></i> ผลลัพธ์ที่คาดหวัง</div>
+            <ul>
+              <li>อธิบาย AI ได้ด้วยภาษาง่ายและถูกต้อง</li>
+              <li>เขียน Prompt เพื่อใช้งาน AI ได้ชัดเจนขึ้น</li>
+              <li>มองเห็นโอกาสใช้ AI กับงานของตนเองได้จริง</li>
+              <li>เข้าใจข้อควรระวังเรื่องข้อมูลส่วนบุคคลและวิชาชีพ</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-1">
+        <div class="section-head"><div class="section-badge">1.1</div><div><h2>AI คืออะไร</h2><p>เริ่มจากนิยามที่เข้าใจง่ายและเชื่อมโยงกับงานจริง</p></div></div>
+        <div class="grid-3">
+          <div class="card"><h3>ความหมายของ AI</h3><p>AI หรือ Artificial Intelligence คือระบบคอมพิวเตอร์ที่ถูกออกแบบให้สามารถทำงานบางอย่างที่ปกติต้องอาศัยการคิด การเรียนรู้ หรือการตัดสินใจของมนุษย์ เช่น การตอบคำถาม การสรุปข้อความ การแปลภาษา การจำแนกข้อมูล และการสร้างเนื้อหาใหม่</p></div>
+          <div class="card"><h3>AI ในมุมของผู้ปฏิบัติงาน</h3><p>สำหรับผู้ปฏิบัติงาน AI ควรถูกมองเป็นผู้ช่วยดิจิทัลที่ช่วยลดงานซ้ำซ้อน ช่วยเริ่มต้นงาน ช่วยจัดโครงสร้างเนื้อหา และช่วยให้การทำงานเร็วขึ้นอย่างมีระบบ</p></div>
+          <div class="card"><h3>ประเด็นที่ผู้สอนควรย้ำ</h3><p>AI ไม่ได้รู้ทุกอย่าง ไม่ได้คิดแทนมนุษย์อย่างสมบูรณ์ และอาจตอบผิดได้ จึงต้องมีการตรวจสอบก่อนนำไปใช้จริงทุกครั้ง</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-2">
+        <div class="section-head"><div class="section-badge">1.2</div><div><h2>ประเภทของ AI</h2><p>อธิบายเฉพาะชนิดที่ผู้เรียนจะพบและสามารถนำไปใช้ได้จริง</p></div></div>
+        <div class="grid-2">
+          <div class="card"><h3>Generative AI</h3><p>AI ที่สร้างเนื้อหาใหม่ เช่น ข้อความ รูปภาพ โค้ด บทสรุป หรือร่างเอกสาร เหมาะกับงานเอกสาร งานสื่อสาร งานอบรม และงานพัฒนาเว็บต้นแบบ</p></div>
+          <div class="card"><h3>Predictive AI</h3><p>AI ที่ใช้วิเคราะห์แนวโน้มจากข้อมูล เช่น แนวโน้มผู้รับบริการ การเปลี่ยนแปลงของตัวชี้วัด หรือการคาดการณ์การใช้ทรัพยากร</p></div>
+          <div class="card"><h3>Classification AI</h3><p>AI ที่ใช้จำแนกหรือจัดกลุ่มข้อมูล เช่น แยกประเภทเอกสาร หมวดหมู่คำร้อง หรือกลุ่มข้อความตามหัวข้อ</p></div>
+          <div class="card"><h3>Recommendation AI</h3><p>AI ที่ใช้แนะนำสิ่งที่เหมาะสม เช่น แนวทางการนำเสนอข้อมูล ชุดหัวข้ออบรม หรือรูปแบบเอกสารที่เหมาะกับบริบทงาน</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-3">
+        <div class="section-head"><div class="section-badge">1.3</div><div><h2>AI ทำอะไรได้ และทำอะไรไม่ได้</h2><p>ช่วยให้ผู้เรียนใช้งาน AI อย่างมีความคาดหวังที่เหมาะสม</p></div></div>
+        <div class="grid-2">
+          <div class="card ok">
+            <h3>สิ่งที่ AI ทำได้ดี</h3>
+            <ul>
+              <li>สรุปข้อมูลหรือข้อความจำนวนมาก</li>
+              <li>ร่างเอกสาร ประกาศ รายงาน และโครงการ</li>
+              <li>จัดระเบียบเนื้อหาให้อ่านง่ายขึ้น</li>
+              <li>ช่วยเสนอไอเดียในการพัฒนางาน</li>
+              <li>ช่วยสร้างโค้ดต้นแบบของเว็บไซต์หรือระบบง่าย ๆ</li>
+            </ul>
+          </div>
+          <div class="card warn">
+            <h3>สิ่งที่ AI ยังไม่ควรทำแทนคน</h3>
+            <ul>
+              <li>ตัดสินใจทางคลินิกแทนบุคลากรสุขภาพ</li>
+              <li>เป็นแหล่งอ้างอิงสุดท้ายโดยไม่มีการตรวจสอบ</li>
+              <li>จัดการข้อมูลผู้ป่วยโดยไม่มีมาตรการความปลอดภัย</li>
+              <li>รับผิดชอบแทนมนุษย์ในเรื่องจริยธรรมและวิชาชีพ</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-4">
+        <div class="section-head"><div class="section-badge">1.4</div><div><h2>Prompt คืออะไร</h2><p>หัวใจของการใช้งาน AI คือการสื่อสารกับ AI ให้ชัดเจน</p></div></div>
+        <div class="grid-2">
+          <div class="card"><h3>ความหมายของ Prompt</h3><p>Prompt คือคำสั่งหรือข้อความที่ผู้ใช้ป้อนให้ AI เพื่อบอกว่าต้องการอะไร ต้องการผลลัพธ์แบบไหน และต้องการให้คำตอบออกมาในรูปแบบใด</p></div>
+          <div class="card"><h3>ทำไม Prompt จึงสำคัญ</h3><p>ยิ่ง Prompt ชัดเจนมากเท่าไร AI ก็ยิ่งตอบได้ตรงมากขึ้น ทั้งในด้านเนื้อหา ระดับภาษา รูปแบบการนำเสนอ และความเหมาะสมกับบริบทงานพยาบาล</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-5">
+        <div class="section-head"><div class="section-badge">1.5</div><div><h2>หลักการเขียน Prompt ที่ดี</h2><p>ให้ผู้เรียนได้โครงสร้างที่นำไปใช้ต่อได้ทันที</p></div></div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-user-tie"></i></div><div><strong>1) ระบุบทบาท</strong><br>เช่น ให้คุณเป็นผู้ช่วยพัฒนาระบบสารสนเทศทางการพยาบาล หรือเป็นวิทยากรอบรม AI สำหรับพยาบาล</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-bullseye"></i></div><div><strong>2) ระบุเป้าหมาย</strong><br>เช่น ช่วยออกแบบเว็บไซต์ประชาสัมพันธ์แผนก หรือช่วยสรุปแนวทางการใช้ AI ในงานบริการ</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-users"></i></div><div><strong>3) ระบุกลุ่มเป้าหมาย</strong><br>เช่น พยาบาลวิชาชีพ ผู้บริหาร เจ้าหน้าที่ธุรการ หรือผู้รับบริการ</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-table-list"></i></div><div><strong>4) ระบุรูปแบบผลลัพธ์</strong><br>เช่น ขอเป็นตาราง ขอเป็นหัวข้อย่อย ขอเป็นแผนการสอน หรือขอเป็นโค้ด HTML</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-sliders"></i></div><div><strong>5) เพิ่มเงื่อนไขเฉพาะ</strong><br>เช่น ใช้ภาษาง่าย ละเอียด เหมาะสำหรับอบรม 3 ชั่วโมง และนำไปใช้ได้จริง</div></div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <div class="eyebrow"><i class="fa-solid fa-terminal"></i> ตัวอย่าง Prompt</div>
+          <div class="code-box">ช่วยออกแบบเนื้อหาการสอนเรื่อง AI กับงานพยาบาลยุคดิจิทัล
+สำหรับอบรมบุคลากรพยาบาล 3 ชั่วโมง
+ขอแบ่งเป็น 2 session ชัดเจน
+session 1 อธิบายพื้นฐาน AI การเขียน prompt ข้อดีข้อจำกัด จริยธรรม และตัวอย่างการใช้ AI กับงานพยาบาล
+session 2 สอนปฏิบัติการทำเว็บไซต์แผนก การใช้ google sheet เป็นฐานข้อมูลอย่างง่าย
+ขอรายละเอียดครบทุกหัวข้อ ภาษาง่าย และนำเสนอเป็นหน้าเว็บหน้าเดียว</div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-6">
+        <div class="section-head"><div class="section-badge">1.6</div><div><h2>ข้อดี ข้อจำกัด และความเสี่ยงของ AI</h2><p>เพื่อให้ผู้เรียนใช้งาน AI อย่างเข้าใจรอบด้าน</p></div></div>
+        <div class="grid-3">
+          <div class="card ok"><h3>ข้อดี</h3><ul><li>ประหยัดเวลาในการเริ่มต้นงาน</li><li>ลดภาระงานเอกสารซ้ำ ๆ</li><li>ช่วยจัดโครงสร้างเนื้อหา</li><li>ช่วยสร้างต้นแบบระบบได้เร็ว</li></ul></div>
+          <div class="card"><h3>ข้อจำกัด</h3><ul><li>อาจตอบผิดหรือแต่งข้อมูลขึ้นมาเอง</li><li>ไม่รู้บริบทเฉพาะของหน่วยงานทั้งหมด</li><li>คุณภาพคำตอบขึ้นกับคุณภาพของ Prompt</li><li>อาจดูดีแต่ยังใช้จริงไม่ได้</li></ul></div>
+          <div class="card warn"><h3>ความเสี่ยง</h3><ul><li>เสี่ยงต่อการเปิดเผยข้อมูลลับ</li><li>เสี่ยงต่อการใช้ข้อมูลผิดโดยไม่ตรวจสอบ</li><li>เสี่ยงพึ่งพา AI มากเกินไป</li><li>เสี่ยงต่อปัญหาจริยธรรมในการใช้งาน</li></ul></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-7">
+        <div class="section-head"><div class="section-badge">1.7</div><div><h2>AI สำคัญกับงานพยาบาลอย่างไร</h2><p>เชื่อมให้ผู้เรียนเห็นว่า AI เป็นเครื่องมือที่ใช้ช่วยงานประจำได้จริง</p></div></div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-file-lines"></i></div><div><strong>ช่วยลดภาระงานเอกสาร</strong><br>เช่น ร่างรายงานประชุม ร่างประกาศ ร่างโครงการ และสรุปข้อมูล</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-bullhorn"></i></div><div><strong>ช่วยด้านการสื่อสาร</strong><br>เช่น เขียนข่าวประชาสัมพันธ์ เขียนคำแนะนำผู้รับบริการ และจัดทำ FAQ</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-book-medical"></i></div><div><strong>ช่วยงานวิชาการและอบรม</strong><br>เช่น สรุปบทความ จัดหัวข้อการสอน และออกแบบสื่ออบรม</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-chart-column"></i></div><div><strong>ช่วยวิเคราะห์ข้อมูลเบื้องต้น</strong><br>เช่น ดูแนวโน้มข้อมูล สรุปตัวเลข และออกแบบ dashboard</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-laptop-code"></i></div><div><strong>ช่วยเริ่มต้นพัฒนาระบบ</strong><br>เช่น เว็บไซต์แผนก ระบบข่าวสาร ระบบฐานความรู้ หรือระบบเก็บข้อมูลอย่างง่าย</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-8">
+        <div class="section-head"><div class="section-badge">1.8</div><div><h2>ตัวอย่างการใช้ AI ในงานพยาบาลยุคดิจิทัล</h2><p>ยกตัวอย่างงานที่นำไปใช้ได้ทันที และมีภาพประกอบช่วยให้สอนง่ายขึ้น</p></div></div>
+        <div class="grid-2">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>กลุ่มงาน</th><th>การใช้ AI</th><th>ประโยชน์</th><th>ตัวอย่าง</th></tr></thead>
+              <tbody>
+                <tr><td>งานเอกสาร</td><td>ร่างหนังสือราชการ รายงานประชุม โครงการ</td><td>ลดเวลาและได้ต้นฉบับเร็ว</td><td>ร่างบันทึกข้อความ ขออนุมัติอบรม</td></tr>
+                <tr><td>งานประชาสัมพันธ์</td><td>เขียนข่าว ประกาศ คำแนะนำผู้รับบริการ</td><td>สื่อสารชัดเจนและเป็นระบบ</td><td>ประกาศเวลาให้บริการ ข่าวกิจกรรม</td></tr>
+                <tr><td>งานวิชาการ</td><td>สรุปบทความและจัดทำสื่ออบรม</td><td>เตรียมสื่อได้เร็วขึ้น</td><td>สรุปงานวิจัยและสร้างหัวข้อสอน</td></tr>
+                <tr><td>งานบริหาร</td><td>สรุปข้อมูลสถิติและรายงานภาพรวม</td><td>สนับสนุนการตัดสินใจ</td><td>สรุปจำนวนผู้รับบริการรายเดือน</td></tr>
+                <tr><td>งานระบบสารสนเทศ</td><td>ออกแบบหน้าเว็บและโค้ดต้นแบบ</td><td>เริ่มต้นระบบได้ง่ายขึ้น</td><td>เว็บแผนก ระบบข่าวสาร ระบบเอกสาร</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card image-card">
+            <img src="https://source.unsplash.com/800x500/?nurse,hospital,computer" alt="ภาพตัวอย่างพยาบาลใช้งานคอมพิวเตอร์ในบริบทดิจิทัล">
+            <div class="image-body">
+              <div class="eyebrow"><i class="fa-solid fa-image"></i> ภาพประกอบ</div>
+              <h3>ภาพตัวอย่างบริบทการทำงานดิจิทัลของบุคลากรพยาบาล</h3>
+              <p>ใช้ประกอบการอธิบายว่า AI และระบบข้อมูลไม่ได้อยู่ไกลจากงานบริการ แต่เชื่อมโยงโดยตรงกับการทำงานที่หน้าจอ การสื่อสารข้อมูล และการจัดการสารสนเทศในหน่วยงาน</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-9">
+        <div class="section-head"><div class="section-badge">1.9</div><div><h2>AI กับการพัฒนาระบบสารสนเทศทางการพยาบาล</h2><p>ชี้ให้เห็นระบบที่เริ่มได้จริงในหน่วยงาน</p></div></div>
+        <div class="grid-3">
+          <div class="card"><h3>เว็บไซต์ประชาสัมพันธ์แผนก</h3><ul><li>แนะนำหน่วยงาน บริการ และช่องทางติดต่อ</li><li>ประกาศข่าวสารและเอกสารดาวน์โหลด</li><li>AI ช่วยเขียนข้อความและสร้างโครงหน้าเว็บ</li></ul></div>
+          <div class="card"><h3>ระบบข่าวสารหน้าบ้าน-หลังบ้าน</h3><ul><li>หน้าบ้านแสดงข่าวให้ผู้ใช้ทั่วไปเห็น</li><li>หลังบ้านใช้ Google Sheet เพิ่มและแก้ไขข่าว</li><li>AI ช่วยสร้างโครงข้อมูลและหน้าแสดงผล</li></ul></div>
+          <div class="card"><h3>ระบบคลังเอกสาร/ฐานความรู้</h3><ul><li>รวม SOP คู่มือ และเอกสารสำคัญ</li><li>จัดหมวดหมู่ให้อ่านง่าย</li><li>AI ช่วยสรุปสาระสำคัญของเอกสาร</li></ul></div>
+          <div class="card"><h3>ระบบเก็บข้อมูลอย่างง่าย</h3><ul><li>ใช้ Google Form และ Google Sheet</li><li>เก็บข้อมูลกิจกรรม ข่าว หรือรายการภายใน</li><li>เหมาะกับหน่วยงานที่เริ่มต้นระบบดิจิทัล</li></ul></div>
+          <div class="card"><h3>Dashboard ข้อมูลง่าย ๆ</h3><ul><li>แสดงจำนวนผู้รับบริการหรือข้อมูลรายเดือน</li><li>ช่วยมองภาพรวมได้เร็ว</li><li>AI ช่วยออกแบบการแสดงผล</li></ul></div>
+          <div class="card"><h3>ระบบกำหนดการ/แจ้งเตือน</h3><ul><li>แสดงกิจกรรม ประชุม อบรม หรือตารางเวร</li><li>สื่อสารภายในได้ดีขึ้น</li><li>ต่อยอดจากฐานข้อมูลอย่างง่ายได้</li></ul></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-10">
+        <div class="section-head"><div class="section-badge">1.10</div><div><h2>จริยธรรม ความปลอดภัย และข้อควรระวัง</h2><p>หัวข้อสำคัญที่ต้องย้ำเสมอในการใช้ AI กับงานพยาบาล</p></div></div>
+        <div class="grid-2">
+          <div class="card warn"><h3>ด้านข้อมูลส่วนบุคคล</h3><ul><li>ไม่ควรนำชื่อผู้ป่วย เลขบัตรประชาชน หรือข้อมูลระบุตัวตนป้อนลง AI โดยตรง</li><li>ควรใช้ข้อมูลตัวอย่างหรือข้อมูลสมมติในการฝึก</li><li>ต้องคำนึงถึง PDPA และความลับผู้ป่วย</li></ul></div>
+          <div class="card"><h3>ด้านวิชาชีพ</h3><ul><li>AI เป็นผู้ช่วย ไม่ใช่ผู้รับผิดชอบแทนบุคลากร</li><li>ทุกผลลัพธ์ต้องผ่านการพิจารณาโดยผู้ปฏิบัติงาน</li><li>ต้องใช้ AI อย่างโปร่งใส ตรวจสอบได้ และไม่ทำให้เกิดความเข้าใจผิด</li></ul></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2">
+        <div class="section-head">
+          <div class="section-badge">2</div>
+          <div>
+            <h2>Session 2: ปฏิบัติการพัฒนาเว็บไซต์แต่ละแผนก และระบบข่าวสาร/ฐานข้อมูลแบบง่าย</h2>
+            <p>Session นี้เน้นการลงมือทำและอธิบายภาพรวมของการพัฒนาระบบอย่างเข้าใจง่าย</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="eyebrow"><i class="fa-solid fa-screwdriver-wrench"></i> เป้าหมาย</div>
+            <ul>
+              <li>รู้จักเครื่องมือพื้นฐานที่ใช้พัฒนาเว็บ</li>
+              <li>เข้าใจ HTML, CSS, JavaScript ในระดับเริ่มต้น</li>
+              <li>เข้าใจการใช้ Google Sheet และ Apps Script</li>
+              <li>ใช้ AI ช่วยสร้างต้นแบบหน้าเว็บได้</li>
+            </ul>
+          </div>
+          <div class="card ok">
+            <div class="eyebrow"><i class="fa-solid fa-laptop"></i> ผลลัพธ์ที่คาดหวัง</div>
+            <ul>
+              <li>ผู้เรียนมองเห็นโครงสร้างเว็บไซต์ของหน่วยงานตนเอง</li>
+              <li>ผู้เรียนแก้ไขโค้ดต้นแบบได้ในระดับพื้นฐาน</li>
+              <li>ผู้เรียนเห็นภาพการเชื่อมข้อมูลจาก Google Sheet เข้าหน้าเว็บ</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-1">
+        <div class="section-head"><div class="section-badge">2.1</div><div><h2>เครื่องมือและโปรแกรมที่ใช้พัฒนา</h2><p>เน้นเครื่องมือที่เข้าถึงง่าย ใช้ได้จริง และเหมาะกับผู้เริ่มต้น</p></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>เครื่องมือ</th><th>ใช้ทำอะไร</th><th>สิ่งที่ควรสอน</th></tr></thead>
+            <tbody>
+              <tr><td>VS Code</td><td>เขียนและแก้ไขโค้ด</td><td>เปิดไฟล์ HTML แก้ข้อความ สี โครงสร้างหน้าเว็บ</td></tr>
+              <tr><td>Web Browser</td><td>ดูผลลัพธ์ของหน้าเว็บ</td><td>รีเฟรชและตรวจผลการแก้ไข</td></tr>
+              <tr><td>Google Sheet</td><td>เป็นฐานข้อมูลอย่างง่าย</td><td>ออกแบบคอลัมน์และจัดระเบียบข้อมูล</td></tr>
+              <tr><td>Google Apps Script</td><td>เชื่อม Sheet กับหน้าเว็บ</td><td>เข้าใจภาพรวมของ doGet และ JSON</td></tr>
+              <tr><td>AI Chat Tool</td><td>ช่วยคิดและช่วยเขียนโค้ด</td><td>สั่งงานให้ชัดและตรวจโค้ดทุกครั้ง</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="s2-2">
+        <div class="section-head"><div class="section-badge">2.2</div><div><h2>ภาษาที่ใช้ในการพัฒนาเว็บไซต์</h2><p>อธิบายในระดับที่ผู้เรียนไม่กลัวโค้ดและเห็นหน้าที่ของแต่ละภาษา</p></div></div>
+        <div class="grid-3">
+          <div class="card"><h3>HTML</h3><p>ใช้กำหนดโครงสร้างของหน้าเว็บ เช่น หัวข้อ ย่อหน้า เมนู ปุ่ม ตาราง ฟอร์ม และส่วนต่าง ๆ ของเนื้อหา</p></div>
+          <div class="card"><h3>CSS</h3><p>ใช้ตกแต่งหน้าเว็บ เช่น สี ฟอนต์ ระยะห่าง พื้นหลัง ปุ่ม การ์ด และการจัดวาง เพื่อให้เว็บสวยงามและอ่านง่าย</p></div>
+          <div class="card"><h3>JavaScript</h3><p>ใช้เพิ่มความสามารถแบบโต้ตอบ เช่น ดึงข้อมูลจากฐานข้อมูล แสดงข้อมูลอัตโนมัติ หรือควบคุมพฤติกรรมของหน้าเว็บ</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-3">
+        <div class="section-head"><div class="section-badge">2.3</div><div><h2>หลักการออกแบบเว็บไซต์เบื้องต้น</h2><p>ช่วยให้ผู้เรียนทำเว็บที่ดูน่าเชื่อถือและใช้งานได้จริง</p></div></div>
+        <div class="grid-2">
+          <div class="card"><ul><li>หน้าแรกต้องบอกว่าเว็บนี้เกี่ยวกับอะไร</li><li>เมนูต้องชัดเจน ไม่ซับซ้อน</li><li>ใช้ฟอนต์อ่านง่าย เช่น Kanit, Sarabun, Noto Sans Thai</li><li>ใช้สีสอดคล้องกับองค์กรและไม่ฉูดฉาดเกินไป</li></ul></div>
+          <div class="card"><ul><li>ใช้ไอคอนเฉพาะจุดเพื่อช่วยสื่อความหมาย</li><li>แบ่งเนื้อหาเป็นส่วน ๆ ด้วยการ์ดหรือหัวข้อ</li><li>ต้องรองรับการเปิดบนมือถือ</li><li>เนื้อหาควรอัปเดตง่ายและค้นหาข้อมูลสำคัญได้เร็ว</li></ul></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-4">
+        <div class="section-head"><div class="section-badge">2.4</div><div><h2>สถาปัตยกรรมเว็บไซต์และโครงสร้างหน้าเว็บ</h2><p>สอนให้เข้าใจว่าหน้าเว็บหนึ่งหน้าแบ่งเป็นส่วนใดบ้าง</p></div></div>
+        <div class="grid-2">
+          <div class="card"><h3>โครงสร้างหน้าเว็บที่ควรรู้</h3><ul><li>Header ส่วนหัวของเว็บไซต์</li><li>Navigation เมนูนำทาง</li><li>Hero Section ส่วนแนะนำหรือข่าวเด่น</li><li>Content Section เนื้อหาหลัก เช่น ข่าว บริการ เอกสาร</li><li>Footer ส่วนติดต่อและข้อมูลท้ายหน้า</li></ul></div>
+          <div class="card image-card">
+            <img src="https://source.unsplash.com/800x500/?hospital,dashboard,team" alt="ภาพตัวอย่างทีมสุขภาพใช้งานระบบดิจิทัล">
+            <div class="image-body">
+              <div class="eyebrow"><i class="fa-solid fa-network-wired"></i> ภาพประกอบ</div>
+              <h3>ตัวอย่างบริบทของการใช้ระบบข้อมูลในหน่วยงานสุขภาพ</h3>
+              <p>ใช้ประกอบการอธิบายเรื่องหน้าบ้าน หน้าหลังบ้าน และการเชื่อมข้อมูลเพื่อให้ผู้เรียนเห็นภาพการใช้งานจริงมากขึ้น</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-5">
+        <div class="section-head"><div class="section-badge">2.5</div><div><h2>Google Sheet เป็นฐานข้อมูลอย่างง่าย</h2><p>แนวคิดสำคัญคือเริ่มจากสิ่งที่ใช้งานง่ายก่อน</p></div></div>
+        <div class="grid-2">
+          <div class="card"><h3>เหตุผลที่เหมาะ</h3><ul><li>ใช้ง่ายและคุ้นเคย</li><li>แก้ไขข้อมูลร่วมกันได้</li><li>เหมาะกับข่าว ประกาศ เอกสาร และรายการข้อมูลทั่วไป</li><li>ต่อยอดเชื่อมกับหน้าเว็บได้</li></ul></div>
+          <div class="card"><h3>หลักการจัดข้อมูล</h3><ul><li>แถวแรกเป็นชื่อคอลัมน์</li><li>ใช้ชื่อคอลัมน์ให้ชัดเจน เช่น วันที่ หัวข้อ รายละเอียด สถานะ</li><li>กรอกข้อมูลอย่างสม่ำเสมอ</li><li>กำหนดสิทธิ์ผู้แก้ไขให้ชัด</li></ul></div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <div class="eyebrow"><i class="fa-solid fa-table-cells"></i> ตัวอย่างโครงสร้างตารางข้อมูลข่าว</div>
+          <div class="table-wrap" style="box-shadow:none;border:none;">
+            <table>
+              <thead><tr><th>ID</th><th>วันที่</th><th>หัวข้อข่าว</th><th>รายละเอียด</th><th>ผู้ประกาศ</th><th>สถานะ</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>2026-03-17</td><td>อบรมการใช้ AI</td><td>อบรมสำหรับบุคลากรพยาบาล ณ ห้องประชุม 2</td><td>งานวิชาการ</td><td>เผยแพร่</td></tr>
+                <tr><td>2</td><td>2026-03-20</td><td>ประชุมหัวหน้าหอผู้ป่วย</td><td>ประชุมติดตามงานประจำเดือนและตัวชี้วัด</td><td>งานบริหาร</td><td>เผยแพร่</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-6">
+        <div class="section-head"><div class="section-badge">2.6</div><div><h2>การใช้ AI ช่วยเขียนโค้ด</h2><p>เน้นการใช้ AI เป็นผู้ช่วยสร้างต้นแบบ และฝึกอ่านผลลัพธ์ที่ได้</p></div></div>
+        <div class="grid-2">
+          <div class="card"><h3>สิ่งที่ควรระบุใน Prompt</h3><ul><li>ประเภทของเว็บไซต์</li><li>เมนูที่ต้องการ</li><li>โทนสีและรูปแบบ</li><li>กลุ่มเป้าหมายของเว็บ</li><li>ขอให้รวม CSS ไว้ในไฟล์เดียว</li></ul></div>
+          <div class="card"><h3>สิ่งที่ต้องตรวจหลังได้โค้ด</h3><ul><li>ข้อความถูกต้องหรือไม่</li><li>เมนูครบหรือไม่</li><li>รูปแบบเหมาะกับงานพยาบาลหรือไม่</li><li>รองรับมือถือหรือไม่</li><li>ยังมีข้อความตัวอย่างที่ต้องแก้หรือไม่</li></ul></div>
+        </div>
+        <div class="card" style="margin-top:16px;"><div class="eyebrow"><i class="fa-solid fa-terminal"></i> ตัวอย่าง Prompt</div><div class="code-box">ช่วยเขียนโค้ดหน้าเว็บแบบไฟล์เดียวสำหรับแผนกการพยาบาล
+ให้มีส่วนหัว ชื่อหน่วยงาน เมนูหน้าแรก ข่าวประชาสัมพันธ์ บริการของแผนก ดาวน์โหลดเอกสาร และติดต่อเรา
+ใช้โทนสีฟ้าขาว ดูเป็นทางการ อ่านง่าย รองรับมือถือ และใส่ CSS ไว้ในไฟล์เดียว</div></div>
+      </section>
+
+      <section class="section" id="s2-7">
+        <div class="section-head"><div class="section-badge">2.7</div><div><h2>ขั้นตอนการสอนปฏิบัติ</h2><p>สามารถใช้เป็น flow การ workshop ได้ทันที</p></div></div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-pen"></i></div><div><strong>ขั้นที่ 1</strong><br>ให้ผู้เรียนกำหนดหน่วยงานหรือแผนกของตนเอง เช่น ผู้ป่วยนอก หอผู้ป่วย งานวิชาการ หรือหน่วยงานสนับสนุน</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-list"></i></div><div><strong>ขั้นที่ 2</strong><br>กำหนดเมนูและเนื้อหาที่ต้องการบนหน้าเว็บ เช่น หน้าแรก ข่าวสาร บริการ เอกสารดาวน์โหลด ติดต่อเรา</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-comment"></i></div><div><strong>ขั้นที่ 3</strong><br>เขียน Prompt ขอให้ AI สร้างโค้ดต้นแบบ และเปรียบเทียบผลจาก Prompt ที่สั้นกับ Prompt ที่ละเอียด</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-code"></i></div><div><strong>ขั้นที่ 4</strong><br>เปิดโค้ดใน VS Code และอธิบายส่วนสำคัญว่าอะไรคือ HTML, CSS และ JavaScript</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-paintbrush"></i></div><div><strong>ขั้นที่ 5</strong><br>ให้ผู้เรียนลองแก้ไขข้อความ สี ฟอนต์ ชื่อแผนก และข้อมูลติดต่อ เพื่อให้เห็นผลของการแก้ไขโค้ด</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-database"></i></div><div><strong>ขั้นที่ 6</strong><br>สาธิตการสร้าง Google Sheet เป็นฐานข้อมูลข่าวหรือประกาศ และอธิบายหลักการตั้งชื่อคอลัมน์</div></div>
+          <div class="timeline-item"><div class="timeline-icon"><i class="fa-solid fa-link"></i></div><div><strong>ขั้นที่ 7</strong><br>อธิบายการเชื่อมข้อมูลเข้าหน้าเว็บผ่าน Apps Script และให้ผู้เรียนเห็นภาพหน้าบ้าน-หลังบ้าน</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-8">
+        <div class="section-head"><div class="section-badge">2.8</div><div><h2>แนวคิดหน้าบ้านและหลังบ้าน</h2><p>เพื่อให้ผู้เรียนเข้าใจภาพรวมของระบบข่าวสารหรือระบบข้อมูล</p></div></div>
+        <div class="grid-2">
+          <div class="card"><h3>หน้าบ้าน (Front-end)</h3><ul><li>ส่วนที่ผู้ใช้งานมองเห็น</li><li>ใช้แสดงข่าวสาร บริการ เอกสาร และข้อมูลต่าง ๆ</li><li>สร้างด้วย HTML, CSS และ JavaScript</li></ul></div>
+          <div class="card"><h3>หลังบ้าน (Back-end แบบง่าย)</h3><ul><li>ส่วนที่ผู้ดูแลใช้จัดการข้อมูล</li><li>ในระบบเริ่มต้นสามารถใช้ Google Sheet แทนได้</li><li>Apps Script ทำหน้าที่เชื่อมข้อมูลออกมาให้หน้าเว็บใช้</li></ul></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-9">
+        <div class="section-head"><div class="section-badge">2.9</div><div><h2>ตัวอย่าง Google Apps Script</h2><p>ใช้สำหรับดึงข้อมูลจาก Google Sheet ออกมาในรูปแบบ JSON</p></div></div>
+        <div class="code-box">function doGet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('news');
+  const data = sheet.getDataRange().getValues();
+  const headers = data.shift();
+
+  const result = data.map(row => {
+    let obj = {};
+    headers.forEach((header, index) => obj[header] = row[index]);
+    return obj;
+  });
+
+  return ContentService
+    .createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
+}</div>
+        <div class="note" style="margin-top:16px;"><strong>อธิบายอย่างง่าย:</strong> โค้ดนี้อ่านข้อมูลจากชีตชื่อ <code>news</code> แปลงแต่ละแถวเป็นข้อมูลแบบ JSON แล้วส่งออกมาให้หน้าเว็บเรียกใช้ได้</div>
+      </section>
+
+      <section class="section" id="s2-10">
+        <div class="section-head"><div class="section-badge">2.10</div><div><h2>ส่วนสาธิต fetch ใช้งานได้จริง</h2><p>ส่วนนี้ออกแบบให้กดทดลองได้ทันที โดยใช้ API ตัวอย่างสาธารณะก่อน และมีโค้ดพร้อมสลับไปใช้ Google Apps Script ของจริงภายหลัง</p></div></div>
+
+        <div class="demo-grid">
+          <div class="demo-box">
+            <div class="eyebrow"><i class="fa-solid fa-flask"></i> สาธิตการทดลอง</div>
+            <div class="demo-actions">
+              <button id="loadDemoBtn">โหลดข้อมูลตัวอย่างผ่าน fetch</button>
+              <button class="secondary" id="clearDemoBtn">ล้างข้อมูล</button>
+            </div>
+            <div id="news-list" class="news-list">
+              <div class="news-item">
+                <h4>ยังไม่ได้โหลดข้อมูล</h4>
+                <p>กดปุ่ม “โหลดข้อมูลตัวอย่างผ่าน fetch” เพื่อสาธิตการดึงข้อมูลจาก API จริง</p>
+                <small>สถานะ: พร้อมทดสอบ</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <div class="eyebrow"><i class="fa-solid fa-code"></i> โค้ดสำหรับสาธิต</div>
+            <div class="code-box">async function loadDemoNews() {
+  const response = await fetch('https://dummyjson.com/posts?limit=3');
+  const data = await response.json();
+  const posts = data.posts || [];
+
+  const mapped = posts.map((post, index) => ({
+    title: `ข่าวตัวอย่าง ${index + 1}: ${post.title}`,
+    detail: post.body,
+    date: 'ข้อมูลสาธิตจาก API ตัวอย่าง'
+  }));
+
+  renderNews(mapped);
+}
+
+// เมื่อจะเปลี่ยนเป็น Google Apps Script ของจริง
+// เปลี่ยน URL เป็น URL Web App ของคุณ เช่น
+// fetch('https://script.google.com/macros/s/XXXXXXXX/exec')</div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:16px;">
+          <strong>วิธีใช้ในการสอน:</strong> ช่วงแรกให้กดสาธิตด้วย API ตัวอย่างก่อน เพื่อให้ผู้เรียนเห็นว่าการ <code>fetch</code> ทำงานจริงอย่างไร จากนั้นจึงอธิบายว่าเมื่อนำไปใช้ในหน่วยงาน ให้เปลี่ยน URL เป็น Web App URL ของ Google Apps Script ที่เชื่อมกับ Google Sheet ของตนเอง
+        </div>
+      </section>
+
+      <section class="section" id="s2-11">
+        <div class="section-head"><div class="section-badge">2.11</div><div><h2>กิจกรรมฝึกปฏิบัติที่แนะนำ</h2><p>ช่วยให้ผู้เรียนได้ลงมือคิดและลงมือทำระหว่างการอบรม</p></div></div>
+        <div class="grid-3">
+          <div class="card"><h3>กิจกรรม 1</h3><p>ให้ผู้เรียนวิเคราะห์ว่างานของหน่วยงานตนเองมีปัญหาอะไรที่ AI หรือเว็บไซต์จะช่วยได้ เช่น ข่าวสารกระจัดกระจาย เอกสารค้นหายาก หรือการสื่อสารไม่ทั่วถึง</p></div>
+          <div class="card"><h3>กิจกรรม 2</h3><p>ให้ผู้เรียนร่างเมนูของเว็บไซต์แผนก และเลือกข้อมูลสำคัญที่ควรนำเสนอในหน้าแรก</p></div>
+          <div class="card"><h3>กิจกรรม 3</h3><p>ให้ผู้เรียนเขียน Prompt เพื่อขอหน้าเว็บต้นแบบจาก AI แล้วเปรียบเทียบผลลัพธ์</p></div>
+          <div class="card"><h3>กิจกรรม 4</h3><p>ให้ผู้เรียนแก้ไขโค้ดต้นแบบ เช่น ชื่อหน่วยงาน สี หัวข้อข่าว และข้อมูลติดต่อ</p></div>
+          <div class="card"><h3>กิจกรรม 5</h3><p>ให้ผู้เรียนสร้าง Google Sheet สำหรับเก็บข่าวหรือประกาศของแผนก พร้อมออกแบบคอลัมน์</p></div>
+          <div class="card"><h3>กิจกรรม 6</h3><p>ให้แต่ละกลุ่มนำเสนอว่าเว็บไซต์หรือระบบที่ออกแบบจะนำไปใช้จริงอย่างไรในหน่วยงาน</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-12">
+        <div class="section-head"><div class="section-badge">2.12</div><div><h2>แนวทางต่อยอดหลังการอบรม</h2><p>ชวนให้ผู้เรียนมองเห็นการพัฒนางานแบบค่อยเป็นค่อยไป</p></div></div>
+        <div class="grid-3">
+          <div class="card"><h3>ระยะเริ่มต้น</h3><ul><li>ทำหน้าเว็บประชาสัมพันธ์หน่วยงาน</li><li>ทำระบบข่าวสารง่าย ๆ</li><li>ทำคลังเอกสารดาวน์โหลด</li></ul></div>
+          <div class="card"><h3>ระยะพัฒนา</h3><ul><li>เพิ่มหมวดหมู่ข้อมูล</li><li>เพิ่มระบบค้นหา</li><li>เพิ่ม dashboard แสดงข้อมูลเบื้องต้น</li></ul></div>
+          <div class="card"><h3>ระยะต่อยอดองค์กร</h3><ul><li>สร้างมาตรฐานข้อมูลของหน่วยงาน</li><li>กำหนดผู้รับผิดชอบดูแลเนื้อหา</li><li>ใช้ AI เป็นผู้ช่วยประจำในการพัฒนาระบบ</li></ul></div>
+        </div>
+      </section>
+
+      <section class="footer">
+        <h3 style="margin:0 0 8px;font-weight:600;color:var(--text);">สรุปสาระสำคัญ</h3>
+        <ul>
+          <li>AI เป็นเครื่องมือช่วยงาน ไม่ใช่ผู้ตัดสินใจแทนมนุษย์</li>
+          <li>การเขียน Prompt ที่ดีทำให้ได้ผลลัพธ์ที่ดีและตรงบริบทมากขึ้น</li>
+          <li>งานพยาบาลสามารถใช้ AI ได้ทั้งงานเอกสาร งานสื่อสาร งานวิชาการ และงานระบบข้อมูล</li>
+          <li>การเริ่มพัฒนาระบบสารสนเทศไม่จำเป็นต้องเริ่มจากสิ่งใหญ่ สามารถเริ่มจากเว็บไซต์และฐานข้อมูลอย่างง่ายก่อน</li>
         </ul>
       </section>
+    </main>
+  </div>
 
-      <section>
-        <h3>ติดต่อ</h3>
-        <ul class="footer-links">
-          <li><i class="fa-solid fa-phone"></i> 054-466-666 ต่อ 1060</li>
-          <li><i class="fa-solid fa-envelope"></i> building@up.ac.th</li>
-          <li><i class="fa-solid fa-location-dot"></i> 19 หมู่ 2 ตำบลแม่กา อำเภอเมืองพะเยา จังหวัดพะเยา 56000</li>
-        </ul>
-      </section>
-    </div>
-    <div class="container footer-bottom">
-      <p>© 2026 กองอาคารสถานที่ มหาวิทยาลัยพะเยา</p>
-      <a href="#top" class="back-top"><i class="fa-solid fa-arrow-up"></i> กลับด้านบน</a>
-    </div>
-  </footer>
+  <script>
+    const menuLinks = document.querySelectorAll('.menu a');
+    const sections = [...document.querySelectorAll('main section[id]')];
 
-  <script src="js/app.js" defer></script>
+    const activateMenu = () => {
+      let currentId = sections[0]?.id || '';
+      const scrollY = window.pageYOffset + 120;
+
+      sections.forEach(section => {
+        if (scrollY >= section.offsetTop) {
+          currentId = section.id;
+        }
+      });
+
+      menuLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
+      });
+    };
+
+    window.addEventListener('scroll', activateMenu);
+    window.addEventListener('load', activateMenu);
+
+    const newsList = document.getElementById('news-list');
+    const loadDemoBtn = document.getElementById('loadDemoBtn');
+    const clearDemoBtn = document.getElementById('clearDemoBtn');
+
+    function renderNews(items) {
+      if (!items.length) {
+        newsList.innerHTML = `
+          <div class="news-item">
+            <h4>ไม่พบข้อมูล</h4>
+            <p>ยังไม่มีรายการข้อมูลสำหรับแสดงผล</p>
+            <small>สถานะ: ว่าง</small>
+          </div>`;
+        return;
+      }
+
+      newsList.innerHTML = items.map(item => `
+        <div class="news-item">
+          <h4>${item.title}</h4>
+          <p>${item.detail}</p>
+          <small>${item.date}</small>
+        </div>
+      `).join('');
+    }
+
+    async function loadDemoNews() {
+      newsList.innerHTML = `
+        <div class="news-item">
+          <h4>กำลังโหลดข้อมูล...</h4>
+          <p>กำลังดึงข้อมูลผ่าน fetch จาก API ตัวอย่าง</p>
+          <small>สถานะ: loading</small>
+        </div>`;
+
+      try {
+        const response = await fetch('https://dummyjson.com/posts?limit=3');
+        const data = await response.json();
+        const posts = data.posts || [];
+
+        const mapped = posts.map((post, index) => ({
+          title: `ข่าวตัวอย่าง ${index + 1}: ${post.title}`,
+          detail: post.body,
+          date: 'ข้อมูลสาธิตจาก API ตัวอย่าง'
+        }));
+
+        renderNews(mapped);
+      } catch (error) {
+        newsList.innerHTML = `
+          <div class="news-item">
+            <h4>โหลดข้อมูลไม่สำเร็จ</h4>
+            <p>ในการใช้งานจริงให้ตรวจสอบว่าเบราว์เซอร์เชื่อมต่ออินเทอร์เน็ต และ URL ของ API ถูกต้อง</p>
+            <small>สถานะ: error</small>
+          </div>`;
+      }
+    }
+
+    loadDemoBtn?.addEventListener('click', loadDemoNews);
+    clearDemoBtn?.addEventListener('click', () => {
+      newsList.innerHTML = `
+        <div class="news-item">
+          <h4>ล้างข้อมูลแล้ว</h4>
+          <p>กดปุ่มโหลดข้อมูลอีกครั้งเพื่อทดลอง fetch ใหม่</p>
+          <small>สถานะ: reset</small>
+        </div>`;
+    });
+  </script>
 </body>
 </html>

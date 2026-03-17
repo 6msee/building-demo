@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+body { font-family: Arial; background:#f1f5f9; padding:20px; }
+h1 { color:#003366; }
+.container { max-width:900px; margin:auto; }
+
+.card {
+  background:#fff;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+input, textarea, select {
+  width:100%;
+  padding:8px;
+  margin:5px 0;
+}
+
+button {
+  padding:8px 12px;
+  margin:5px;
+  background:#003366;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+button:hover { background:#0055aa; }
+
+.status {
+  padding:10px;
+  margin:10px 0;
+  border-radius:5px;
+  background:#e6f0ff;
+}
+
+.row { display:flex; gap:10px; }
+.row > * { flex:1; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📊 Admin Dashboard</h1>
+
+<div id="status" class="status">🔄 กำลังเริ่มต้นระบบ...</div>
+
+<select id="sheet">
+  <option value="news">📰 ข่าว</option>
+  <option value="events">🎉 กิจกรรม</option>
+  <option value="services">📄 บริการ</option>
+</select>
+
+<input type="text" id="search" placeholder="🔍 ค้นหา...">
+
+<div class="card">
+<h3>➕ เพิ่ม / แก้ไขข้อมูล</h3>
+
+<input id="title" placeholder="หัวข้อ / ชื่อ">
+<textarea id="detail" placeholder="รายละเอียด"></textarea>
+
+<input id="form_type" placeholder="ประเภท (เฉพาะบริการ)">
+<input id="file_url" placeholder="ลิงก์ไฟล์ (บริการ)">
+<input type="file" id="image">
+
+<button onclick="save()">💾 บันทึก</button>
+</div>
+
+<div id="list"></div>
+
+<div>
+  <button onclick="prev()">⬅️</button>
+  <span id="page"></span>
+  <button onclick="next()">➡️</button>
+</div>
+
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbzbMaEdHmzBYt-8pTX8N1wNiwpS4TJhHP7yn-bSfXRcDEPYaQ3Lh7E5q0rrW_ZFrWpLRA/exec";
+
+let dataAll = [];
+let page = 1;
+let editId = null;
+const perPage = 5;
+
+// ===== STATUS =====
+function setStatus(msg, error=false) {
+  const el = document.getElementById("status");
+  el.innerText = msg;
+  el.style.background = error ? "#ffd6d6" : "#e6f0ff";
+}
+
+// ===== LOAD =====
+function load() {
+  const sheet = document.getElementById("sheet").value;
+
+  setStatus("🔄 กำลังโหลดข้อมูล...");
+
+const url = API + "?sheet=" + sheet;
+
+fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(url))
+  .then(res => res.json())
+  .then(data => {
+    dataAll = data;
+    page = 1;
+    render();
+    setStatus("✅ โหลดสำเร็จ (" + data.length + " รายการ)");
+  })
+  .catch(err => {
+    console.error(err);
+    setStatus("❌ โหลดล้มเหลว", true);
+  });
+} // 🔥 <<< ตรงนี้สำคัญมาก
+
+// ===== RENDER =====
+function render() {
+  const search = document.getElementById("search").value.toLowerCase();
+
+  let filtered = dataAll.filter(i =>
+    JSON.stringify(i).toLowerCase().includes(search)
+  );
+
+  const start = (page - 1) * perPage;
+  const items = filtered.slice(start, start + perPage);
+
+  let html = "";
+
+  items.forEach(item => {
+    html += `
+      <div class="card">
+        <b>${item.title || item.form_name}</b><br>
+        <small>${item.date || ""}</small><br>
+        <button onclick="edit(${item.id})">✏️ แก้ไข</button>
+        <button onclick="del(${item.id})">❌ ลบ</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("list").innerHTML = html;
+  document.getElementById("page").innerText = "หน้า " + page;
+}
+
+// ===== SAVE =====
+function save() {
+  const sheet = document.getElementById("sheet").value;
+  const file = document.getElementById("image").files[0];
+
+  setStatus("📤 กำลังบันทึก...");
+
+  const data = {
+    sheet: sheet,
+    action: editId ? "update" : "create",
+    id: editId,
+    title: document.getElementById("title").value,
+    detail: document.getElementById("detail").value,
+    form_name: document.getElementById("title").value,
+    form_type: document.getElementById("form_type").value,
+    file_url: document.getElementById("file_url").value
+  };
+
+  if (file) {
+    setStatus("🖼️ กำลังแปลงรูป...");
+
+    const reader = new FileReader();
+    reader.onload = function() {
+      const base64 = reader.result.split(",")[1];
+      data.cover_image_base64 = base64;
+      data.image_base64 = base64;
+
+      setStatus("📤 กำลังอัปโหลดรูป...");
+      send(data);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    send(data);
+  }
+}
+
+// ===== SEND =====
+function send(data) {
+fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(API), {
+  method: "POST",
+  body: JSON.stringify(data)
+})
+  .then(res => res.json())
+  .then(res => {
+    console.log(res);
+
+    if (res.status) {
+      setStatus("✅ บันทึกสำเร็จ");
+    } else {
+      setStatus("⚠️ API ตอบกลับผิดปกติ", true);
+    }
+
+    resetForm();
+    load();
+  })
+  .catch(err => {
+    console.error(err);
+    setStatus("❌ ส่งข้อมูลล้มเหลว", true);
+  });
+}
+
+// ===== DELETE =====
+function del(id) {
+  if (!confirm("ลบข้อมูลนี้หรือไม่?")) return;
+
+  setStatus("🗑️ กำลังลบ...");
+
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      sheet: document.getElementById("sheet").value,
+      action: "delete",
+      id: id
+    })
+  })
+  .then(() => {
+    setStatus("✅ ลบสำเร็จ");
+    load();
+  })
+  .catch(() => setStatus("❌ ลบไม่สำเร็จ", true));
+}
+
+// ===== EDIT =====
+function edit(id) {
+  const item = dataAll.find(i => i.id == id);
+
+  editId = id;
+
+  document.getElementById("title").value = item.title || item.form_name || "";
+  document.getElementById("detail").value = item.detail || "";
+  document.getElementById("form_type").value = item.form_type || "";
+  document.getElementById("file_url").value = item.file_url || "";
+
+  setStatus("✏️ กำลังแก้ไข ID: " + id);
+}
+
+// ===== RESET =====
+function resetForm() {
+  editId = null;
+  document.getElementById("title").value = "";
+  document.getElementById("detail").value = "";
+  document.getElementById("form_type").value = "";
+  document.getElementById("file_url").value = "";
+}
+
+// ===== PAGINATION =====
+function next() { page++; render(); }
+function prev() { if (page > 1) page--; render(); }
+
+// ===== EVENTS =====
+document.getElementById("sheet").addEventListener("change", load);
+document.getElementById("search").addEventListener("input", render);
+
+// START
+load();
+</script>
+
+</body>
+</html>

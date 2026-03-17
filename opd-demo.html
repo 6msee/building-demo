@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>แผนกผู้ป่วยนอก (OPD)</title>
+  <style>
+    :root {
+      --primary: #0f5fa8;
+      --primary-dark: #0a4a83;
+      --primary-soft: #eaf4ff;
+      --accent: #3c8dde;
+      --white: #ffffff;
+      --text: #15324b;
+      --muted: #64748b;
+      --border: #d9e7f5;
+      --bg: #f7fbff;
+      --shadow: 0 10px 30px rgba(15, 95, 168, 0.08);
+      --radius: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(180deg, #f8fcff 0%, #eef6ff 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(92%, var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(217, 231, 245, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), #7cc2ff);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      line-height: 1.2;
+    }
+
+    .brand-text p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .menu a {
+      padding: 10px 14px;
+      border-radius: 12px;
+      color: var(--text);
+      font-weight: 600;
+      transition: .25s ease;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .hero {
+      padding: 52px 0 34px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .panel,
+    .news-card,
+    .service-card,
+    .download-card,
+    .contact-card,
+    .activity-card,
+    .featured-news {
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .hero-card {
+      padding: 34px;
+      background: linear-gradient(135deg, rgba(15,95,168,0.96), rgba(72,154,225,0.92));
+      color: var(--white);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+
+    .hero-card h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.2;
+    }
+
+    .hero-card p {
+      margin: 0 0 18px;
+      font-size: 1rem;
+      opacity: 0.96;
+      max-width: 640px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: .25s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--white);
+      color: var(--primary);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.38);
+      color: var(--white);
+    }
+
+    .panel {
+      padding: 20px;
+    }
+
+    .panel h3,
+    .section-header h2 {
+      margin: 0 0 8px;
+    }
+
+    .panel p,
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      background: var(--primary-soft);
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid var(--border);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      color: var(--primary);
+    }
+
+    .section {
+      padding: 28px 0 18px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .featured-news {
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .featured-news-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 0;
+    }
+
+    .featured-news-cover {
+      min-height: 320px;
+      background: #dbeeff center/cover no-repeat;
+    }
+
+    .featured-news-body {
+      padding: 24px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .featured-news-body h3,
+    .news-card h3,
+    .service-card h3,
+    .download-card h3,
+    .activity-card h3,
+    .contact-card h3 {
+      margin: 0 0 10px;
+      line-height: 1.35;
+    }
+
+    .featured-news-body p,
+    .news-card p,
+    .service-card p,
+    .download-card p,
+    .activity-card p,
+    .contact-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .news-card,
+    .service-card,
+    .download-card,
+    .activity-card,
+    .contact-card {
+      overflow: hidden;
+    }
+
+    .card-cover {
+      aspect-ratio: 16 / 9;
+      background: #dcebfb center/cover no-repeat;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .card-footer {
+      padding: 0 18px 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-link {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .doc-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .doc-row + .doc-row {
+      margin-top: 12px;
+    }
+
+    .doc-meta strong { display: block; }
+    .doc-meta span { color: var(--muted); font-size: 0.92rem; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 18px;
+    }
+
+    .contact-card,
+    .contact-form {
+      padding: 22px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .contact-item {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .contact-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .contact-form {
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      background: #fbfdff;
+    }
+
+    .field textarea { min-height: 130px; resize: vertical; }
+
+    .footer {
+      margin-top: 30px;
+      padding: 26px 0 40px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .empty-state {
+      padding: 24px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.8);
+      border: 1px dashed var(--border);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 18px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .featured-news-grid,
+      .contact-grid,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-news-cover {
+        min-height: 240px;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .menu-toggle { display: inline-flex; }
+      .menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 10px;
+      }
+      .menu.show { display: flex; }
+      .navbar {
+        flex-wrap: wrap;
+      }
+      .menu a { background: #fff; border: 1px solid var(--border); }
+    }
+
+    @media (max-width: 560px) {
+      .hero-card,
+      .panel,
+      .featured-news-body,
+      .card-body,
+      .contact-card,
+      .contact-form { padding: 18px; }
+
+      .hero-card h2 { font-size: 1.6rem; }
+      .brand-text h1 { font-size: 1rem; }
+      .quick-stats { grid-template-columns: 1fr; }
+      .doc-row { flex-direction: column; align-items: flex-start; }
+      .section-header { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container navbar">
+      <div class="brand">
+        <div class="brand-badge">OPD</div>
+        <div class="brand-text">
+          <h1>แผนกผู้ป่วยนอก (OPD)</h1>
+          <p>หน่วยงานบริการทางการแพทย์ | ทันสมัย โปร่งใส เข้าถึงง่าย</p>
+        </div>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle">เมนู</button>
+
+      <nav class="menu" id="menu">
+        <a href="#home">หน้าแรก</a>
+        <a href="#news">ข่าวประชาสัมพันธ์</a>
+        <a href="#services">บริการของแผนก</a>
+        <a href="#downloads">ดาวน์โหลดเอกสาร</a>
+        <a href="#contact">ติดต่อเรา</a>
+        <a href="#admin">หลังบ้านอัปข่าว</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-card">
+          <div class="hero-badge">เว็บไซต์ทางการของแผนกผู้ป่วยนอก</div>
+          <h2>บริการข้อมูล ข่าวสาร เอกสาร และกิจกรรมของแผนกในที่เดียว</h2>
+          <p>
+            รองรับการแสดงผลบนมือถือ ใช้งานง่าย อ่านสบายตา และสามารถเชื่อมต่อ Google Sheet เป็นฐานข้อมูลกลางสำหรับจัดการข่าวประชาสัมพันธ์ บริการ เอกสารดาวน์โหลด และกิจกรรมพร้อมรูปภาพได้
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#news">ดูข่าวล่าสุด</a>
+            <a class="btn btn-outline" href="#downloads">ดาวน์โหลดเอกสาร</a>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>ภาพรวมข้อมูล</h3>
+          <p>จัดการเนื้อหาผ่าน Google Sheet ได้โดยไม่ต้องแก้โค้ดหน้าเว็บทุกครั้ง</p>
+          <div class="quick-stats">
+            <div class="stat">
+              <strong id="statNews">0</strong>
+              <span>ข่าวประชาสัมพันธ์</span>
+            </div>
+            <div class="stat">
+              <strong id="statServices">0</strong>
+              <span>บริการ / แบบฟอร์ม</span>
+            </div>
+            <div class="stat">
+              <strong id="statDocs">0</strong>
+              <span>เอกสารดาวน์โหลด</span>
+            </div>
+            <div class="stat">
+              <strong id="statActivities">0</strong>
+              <span>กิจกรรม</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="news">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ข่าวประชาสัมพันธ์</h2>
+            <p>ประกาศ ข่าวสารสำคัญ และข้อมูลที่ควรทราบจากแผนกผู้ป่วยนอก</p>
+          </div>
+        </div>
+
+        <div id="featuredNews"></div>
+        <div class="grid-3" id="newsList">
+          <div class="loading">กำลังโหลดข่าวประชาสัมพันธ์...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>บริการของแผนก</h2>
+            <p>ข้อมูลบริการ แบบฟอร์ม เอกสาร และกิจกรรมต่าง ๆ ของหน่วยงาน</p>
+          </div>
+        </div>
+        <div class="grid-2" id="servicesList">
+          <div class="loading">กำลังโหลดข้อมูลบริการ...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="downloads">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ดาวน์โหลดเอกสาร</h2>
+            <p>รวมแบบฟอร์ม เอกสาร และไฟล์สำหรับประชาชนหรือบุคลากร</p>
+          </div>
+        </div>
+        <div id="downloadsList">
+          <div class="loading">กำลังโหลดเอกสาร...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="activities">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>กิจกรรม</h2>
+            <p>กิจกรรมที่กำลังจะเกิดขึ้น พร้อมรายละเอียดและภาพประชาสัมพันธ์</p>
+          </div>
+        </div>
+        <div class="grid-3" id="activitiesList">
+          <div class="loading">กำลังโหลดกิจกรรม...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="admin">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>หลังบ้านอัปข่าว</h2>
+            <p>สำหรับเพิ่มข่าวประชาสัมพันธ์เข้าสู่ Google Sheet ผ่าน Google Apps Script</p>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>ข้อมูลที่ต้องกรอก</h3>
+            <p>ฟอร์มนี้จะส่งข้อมูลไปเก็บในชีต <strong>news</strong> โดยรองรับหัวข้อข่าว รายละเอียด รูปข่าว รูปหน้าปก วันเดือนปี ผู้อัปข่าว และแท็กประเภทข่าว</p>
+            <div class="contact-list">
+              <div class="contact-item">
+                <strong>ปลายทางข้อมูล</strong>
+                Google Sheet ชีตชื่อ <code>news</code>
+              </div>
+              <div class="contact-item">
+                <strong>รูปภาพข่าว</strong>
+                ใช้ลิงก์รูปจาก Google Drive หรือ URL รูปโดยตรง
+              </div>
+              <div class="contact-item">
+                <strong>ความปลอดภัย</strong>
+                แนะนำเพิ่มรหัสผ่านฝั่ง Apps Script ก่อนใช้งานจริง
+              </div>
+              <div class="contact-item">
+                <strong>การแสดงผล</strong>
+                ข่าวที่เพิ่มใหม่จะแสดงในหน้าเว็บไซต์ทันทีหลังรีเฟรช
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form">
+            <h3>ฟอร์มเพิ่มข่าวประชาสัมพันธ์</h3>
+            <p style="margin-bottom:14px; color: var(--muted);">กรอกข้อมูลข่าวแล้วกดบันทึก ระบบจะส่งข้อมูลไปยัง Google Apps Script</p>
+            <form class="form-grid" id="newsAdminForm">
+              <div class="field">
+                <label>รหัสผ่านผู้ดูแล (ถ้ามี)</label>
+                <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่านผู้ดูแล" />
+              </div>
+              <div class="field">
+                <label>หัวข้อข่าว</label>
+                <input type="text" id="newsTitle" placeholder="เช่น ประกาศเปลี่ยนแปลงเวลารับบริการ" required />
+              </div>
+              <div class="field">
+                <label>สรุปข่าว</label>
+                <textarea id="newsSummary" placeholder="สรุปข่าวแบบสั้นสำหรับแสดงบนการ์ดข่าว"></textarea>
+              </div>
+              <div class="field">
+                <label>รายละเอียดข่าว</label>
+                <textarea id="newsDetail" placeholder="รายละเอียดข่าวฉบับเต็ม" required></textarea>
+              </div>
+              <div class="field">
+                <label>ลิงก์รูปข่าว</label>
+                <input type="url" id="newsImage" placeholder="https://..." />
+              </div>
+              <div class="field">
+                <label>ลิงก์รูปหน้าปกข่าว</label>
+                <input type="url" id="newsCoverImage" placeholder="https://..." />
+              </div>
+              <div class="field">
+                <label>วันเดือนปีข่าว</label>
+                <input type="text" id="newsDate" placeholder="เช่น 17 มีนาคม 2026" required />
+              </div>
+              <div class="field">
+                <label>ผู้อัปข่าว</label>
+                <input type="text" id="newsAuthor" placeholder="ชื่อผู้บันทึกข่าว" required />
+              </div>
+              <div class="field">
+                <label>แท็กประเภทข่าว</label>
+                <input type="text" id="newsTag" placeholder="เช่น ประกาศ / กิจกรรม / บริการ" />
+              </div>
+              <button class="btn" type="submit" style="background: var(--primary); color: white;">บันทึกข่าว</button>
+              <div id="adminStatus" style="color: var(--muted); font-size: .95rem;"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>ติดต่อเรา</h2>
+            <p>สอบถามข้อมูลเพิ่มเติม ติดต่อแผนกผู้ป่วยนอกได้ตามช่องทางด้านล่าง</p>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>ข้อมูลการติดต่อ</h3>
+            <p>สามารถแก้ไขข้อมูลส่วนนี้ให้ตรงกับหน่วยงานจริงได้ในโค้ด</p>
+            <div class="contact-list">
+              <div class="contact-item">
+                <strong>สถานที่</strong>
+                อาคารผู้ป่วยนอก โรงพยาบาลตัวอย่าง จังหวัดตัวอย่าง
+              </div>
+              <div class="contact-item">
+                <strong>โทรศัพท์</strong>
+                0-2000-0000 ต่อ 1234
+              </div>
+              <div class="contact-item">
+                <strong>อีเมล</strong>
+                opd@examplehospital.go.th
+              </div>
+              <div class="contact-item">
+                <strong>เวลาทำการ</strong>
+                วันจันทร์ - ศุกร์ เวลา 08:00 - 16:30 น.
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form">
+            <h3>แบบฟอร์มติดต่อ</h3>
+            <p style="margin-bottom:14px; color: var(--muted);">ตัวอย่างฟอร์มหน้าบ้าน สามารถเชื่อมต่อ Google Form หรือ Apps Script เพิ่มได้ภายหลัง</p>
+            <form class="form-grid" onsubmit="event.preventDefault(); alert('ตัวอย่างฟอร์ม: กรุณาเชื่อมต่อระบบส่งข้อมูลเพิ่มเติม');">
+              <div class="field">
+                <label>ชื่อ - นามสกุล</label>
+                <input type="text" placeholder="กรอกชื่อของคุณ" />
+              </div>
+              <div class="field">
+                <label>อีเมล / เบอร์โทร</label>
+                <input type="text" placeholder="กรอกข้อมูลติดต่อกลับ" />
+              </div>
+              <div class="field">
+                <label>ข้อความ</label>
+                <textarea placeholder="กรอกรายละเอียดที่ต้องการสอบถาม"></textarea>
+              </div>
+              <button class="btn" style="background: var(--primary); color: white;">ส่งข้อความ</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © 2026 แผนกผู้ป่วยนอก (OPD) | เว็บไซต์ตัวอย่างสำหรับเชื่อมต่อ Google Sheet และ Google Apps Script
+    </div>
+  </footer>
+
+  <script>
+    // ==============================
+    // ตั้งค่า URL ของ Google Apps Script Web App ที่ deploy แล้ว
+    // เช่น https://script.google.com/macros/s/AKfycbxxxxxxx/exec
+    // ==============================
+    const API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL_HERE";
+    const ADMIN_API_URL = API_URL;
+
+    const sampleData = {
+      news: [
+        {
+          id: 1,
+          title: "ประกาศปรับปรุงระบบนัดหมายผู้ป่วยนอก",
+          summary: "แผนกผู้ป่วยนอกเปิดให้บริการระบบนัดหมายใหม่ เพื่อความสะดวก รวดเร็ว และลดระยะเวลารอคอย",
+          detail: "รายละเอียดข่าวตัวอย่าง สามารถแก้ไขผ่าน Google Sheet ได้",
+          coverImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
+          image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
+          date: "15 มีนาคม 2026",
+          author: "ผู้ดูแลระบบ",
+          tag: "ประกาศ"
+        },
+        {
+          id: 2,
+          title: "แจ้งแนวทางการรับบริการคลินิกเฉพาะทาง",
+          summary: "ประชาสัมพันธ์ขั้นตอนการเข้ารับบริการในคลินิกเฉพาะทาง พร้อมเอกสารที่ต้องเตรียม",
+          detail: "รายละเอียดข่าวตัวอย่าง",
+          coverImage: "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=80",
+          image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
+          date: "10 มีนาคม 2026",
+          author: "เจ้าหน้าที่ประชาสัมพันธ์",
+          tag: "บริการ"
+        }
+      ],
+      services: [
+        {
+          id: 1,
+          formName: "แบบฟอร์มลงทะเบียนผู้ป่วยใหม่",
+          formType: "แบบฟอร์มบริการ",
+          fileUrl: "#",
+          document: "เอกสารประกอบการลงทะเบียน",
+          description: "ใช้สำหรับผู้รับบริการใหม่ที่เข้ารับบริการครั้งแรก",
+          image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          id: 2,
+          formName: "แบบฟอร์มขอสำเนาเวชระเบียน",
+          formType: "งานเอกสาร",
+          fileUrl: "#",
+          document: "คำร้องขอสำเนาเวชระเบียน",
+          description: "สำหรับผู้ป่วยหรือผู้มีอำนาจยื่นคำร้องขอเอกสารเวชระเบียน",
+          image: "https://images.unsplash.com/photo-1581595219315-a187dd40c322?auto=format&fit=crop&w=1200&q=80"
+        }
+      ],
+      downloads: [
+        {
+          id: 1,
+          title: "คู่มือการรับบริการผู้ป่วยนอก",
+          type: "PDF",
+          fileUrl: "#"
+        },
+        {
+          id: 2,
+          title: "แบบฟอร์มขอเลื่อนนัด",
+          type: "DOCX / PDF",
+          fileUrl: "#"
+        }
+      ],
+      activities: [
+        {
+          id: 1,
+          title: "กิจกรรมรณรงค์สุขภาพประจำเดือน",
+          description: "กิจกรรมให้ความรู้และประชาสัมพันธ์การดูแลสุขภาพสำหรับผู้มารับบริการ",
+          image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1200&q=80",
+          date: "22 มีนาคม 2026"
+        },
+        {
+          id: 2,
+          title: "อบรมการใช้ระบบลงทะเบียนใหม่",
+          description: "ประชาสัมพันธ์บุคลากรและผู้รับบริการเกี่ยวกับแนวทางการใช้งานระบบใหม่",
+          image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1200&q=80",
+          date: "28 มีนาคม 2026"
+        }
+      ]
+    };
+
+    const menuToggle = document.getElementById('menuToggle');
+    const menu = document.getElementById('menu');
+    menuToggle.addEventListener('click', () => menu.classList.toggle('show'));
+
+    async function fetchData() {
+      if (!API_URL || API_URL.includes('PASTE_YOUR')) {
+        return sampleData;
+      }
+
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error('โหลดข้อมูลไม่สำเร็จ');
+        return await res.json();
+      } catch (error) {
+        console.error(error);
+        return sampleData;
+      }
+    }
+
+    function safeText(text) {
+      return text ? String(text) : '-';
+    }
+
+    function renderFeaturedNews(news) {
+      const wrap = document.getElementById('featuredNews');
+      if (!news.length) {
+        wrap.innerHTML = '<div class="empty-state">ยังไม่มีข่าวประชาสัมพันธ์</div>';
+        return;
+      }
+
+      const item = news[0];
+      wrap.innerHTML = `
+        <article class="featured-news">
+          <div class="featured-news-grid">
+            <div class="featured-news-cover" style="background-image:url('${item.coverImage || item.image || ''}')"></div>
+            <div class="featured-news-body">
+              <div class="meta-row">
+                <span class="chip">${safeText(item.tag)}</span>
+                <span class="chip">${safeText(item.date)}</span>
+                <span class="chip">โดย ${safeText(item.author)}</span>
+              </div>
+              <h3>${safeText(item.title)}</h3>
+              <p>${safeText(item.summary || item.detail)}</p>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderNews(news) {
+      const list = document.getElementById('newsList');
+      if (!news.length) {
+        list.innerHTML = '<div class="empty-state">ยังไม่มีรายการข่าว</div>';
+        return;
+      }
+
+      list.innerHTML = news.slice(1).map(item => `
+        <article class="news-card">
+          <div class="card-cover" style="background-image:url('${item.image || item.coverImage || ''}')"></div>
+          <div class="card-body">
+            <div class="meta-row">
+              <span class="chip">${safeText(item.tag)}</span>
+              <span class="chip">${safeText(item.date)}</span>
+            </div>
+            <h3>${safeText(item.title)}</h3>
+            <p>${safeText(item.summary || item.detail)}</p>
+          </div>
+          <div class="card-footer">
+            <span style="color: var(--muted); font-size: .92rem;">โดย ${safeText(item.author)}</span>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderServices(services) {
+      const list = document.getElementById('servicesList');
+      if (!services.length) {
+        list.innerHTML = '<div class="empty-state">ยังไม่มีข้อมูลบริการ</div>';
+        return;
+      }
+
+      list.innerHTML = services.map(item => `
+        <article class="service-card">
+          <div class="card-cover" style="background-image:url('${item.image || ''}')"></div>
+          <div class="card-body">
+            <div class="meta-row">
+              <span class="chip">${safeText(item.formType)}</span>
+              <span class="chip">${safeText(item.document)}</span>
+            </div>
+            <h3>${safeText(item.formName)}</h3>
+            <p>${safeText(item.description)}</p>
+          </div>
+          <div class="card-footer">
+            <a class="card-link" href="${item.fileUrl || '#'}" target="_blank" rel="noopener">เปิดไฟล์</a>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderDownloads(downloads) {
+      const list = document.getElementById('downloadsList');
+      if (!downloads.length) {
+        list.innerHTML = '<div class="empty-state">ยังไม่มีเอกสารดาวน์โหลด</div>';
+        return;
+      }
+
+      list.innerHTML = downloads.map(item => `
+        <div class="doc-row">
+          <div class="doc-meta">
+            <strong>${safeText(item.title)}</strong>
+            <span>${safeText(item.type)}</span>
+          </div>
+          <a class="btn" style="background: var(--primary); color: white;" href="${item.fileUrl || '#'}" target="_blank" rel="noopener">ดาวน์โหลด</a>
+        </div>
+      `).join('');
+    }
+
+    function renderActivities(activities) {
+      const list = document.getElementById('activitiesList');
+      if (!activities.length) {
+        list.innerHTML = '<div class="empty-state">ยังไม่มีกิจกรรม</div>';
+        return;
+      }
+
+      list.innerHTML = activities.map(item => `
+        <article class="activity-card">
+          <div class="card-cover" style="background-image:url('${item.image || ''}')"></div>
+          <div class="card-body">
+            <div class="meta-row">
+              <span class="chip">${safeText(item.date)}</span>
+            </div>
+            <h3>${safeText(item.title)}</h3>
+            <p>${safeText(item.description)}</p>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function setStats(data) {
+      document.getElementById('statNews').textContent = data.news?.length || 0;
+      document.getElementById('statServices').textContent = data.services?.length || 0;
+      document.getElementById('statDocs').textContent = data.downloads?.length || 0;
+      document.getElementById('statActivities').textContent = data.activities?.length || 0;
+    }
+
+    async function init() {
+      const data = await fetchData();
+      const normalized = {
+        news: Array.isArray(data.news) ? data.news : [],
+        services: Array.isArray(data.services) ? data.services : [],
+        downloads: Array.isArray(data.downloads) ? data.downloads : [],
+        activities: Array.isArray(data.activities) ? data.activities : []
+      };
+
+      renderFeaturedNews(normalized.news);
+      renderNews(normalized.news);
+      renderServices(normalized.services);
+      renderDownloads(normalized.downloads);
+      renderActivities(normalized.activities);
+      setStats(normalized);
+    }
+
+    function generateNewsId() {
+      return Date.now();
+    }
+
+    async function submitNewsForm(event) {
+      event.preventDefault();
+      const statusEl = document.getElementById('adminStatus');
+      statusEl.textContent = 'กำลังบันทึกข้อมูล...';
+
+      const payload = {
+        action: 'addNews',
+        password: document.getElementById('adminPassword').value.trim(),
+        id: generateNewsId(),
+        title: document.getElementById('newsTitle').value.trim(),
+        summary: document.getElementById('newsSummary').value.trim(),
+        detail: document.getElementById('newsDetail').value.trim(),
+        image: document.getElementById('newsImage').value.trim(),
+        coverImage: document.getElementById('newsCoverImage').value.trim(),
+        date: document.getElementById('newsDate').value.trim(),
+        author: document.getElementById('newsAuthor').value.trim(),
+        tag: document.getElementById('newsTag').value.trim()
+      };
+
+      if (!ADMIN_API_URL || ADMIN_API_URL.includes('PASTE_YOUR')) {
+        statusEl.textContent = 'ยังไม่ได้ตั้งค่า ADMIN_API_URL / API_URL ของ Google Apps Script';
+        return;
+      }
+
+      try {
+        const res = await fetch(ADMIN_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        let result = {};
+        try { result = JSON.parse(text); } catch(e) {}
+
+        if (result.status === 'success') {
+          statusEl.textContent = 'บันทึกข่าวเรียบร้อยแล้ว';
+          document.getElementById('newsAdminForm').reset();
+          init();
+        } else {
+          statusEl.textContent = result.message || 'ไม่สามารถบันทึกข้อมูลได้';
+        }
+      } catch (error) {
+        console.error(error);
+        statusEl.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อระบบ';
+      }
+    }
+
+    document.getElementById('newsAdminForm')?.addEventListener('submit', submitNewsForm);
+
+    init();
+  </script>
+</body>
+</html>
