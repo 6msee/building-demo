@@ -41,9 +41,6 @@ button:hover { background:#0055aa; }
   border-radius:5px;
   background:#e6f0ff;
 }
-
-.row { display:flex; gap:10px; }
-.row > * { flex:1; }
 </style>
 </head>
 
@@ -64,12 +61,12 @@ button:hover { background:#0055aa; }
 <input type="text" id="search" placeholder="🔍 ค้นหา...">
 
 <div class="card">
-<h3>➕ เพิ่ม / แก้ไขข้อมูล</h3>
+<h3>➕ เพิ่ม / แก้ไข</h3>
 
 <input id="title" placeholder="หัวข้อ / ชื่อ">
 <textarea id="detail" placeholder="รายละเอียด"></textarea>
 
-<input id="form_type" placeholder="ประเภท (เฉพาะบริการ)">
+<input id="form_type" placeholder="ประเภท (บริการ)">
 <input id="file_url" placeholder="ลิงก์ไฟล์ (บริการ)">
 <input type="file" id="image">
 
@@ -101,27 +98,25 @@ function setStatus(msg, error=false) {
   el.style.background = error ? "#ffd6d6" : "#e6f0ff";
 }
 
-// ===== LOAD =====
+// ===== LOAD DATA =====
 function load() {
   const sheet = document.getElementById("sheet").value;
 
-  setStatus("🔄 กำลังโหลดข้อมูล...");
+  setStatus("🔄 โหลดข้อมูล...");
 
-const url = API + "?sheet=" + sheet;
-
-fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(url))
-  .then(res => res.json())
-  .then(data => {
-    dataAll = data;
-    page = 1;
-    render();
-    setStatus("✅ โหลดสำเร็จ (" + data.length + " รายการ)");
-  })
-  .catch(err => {
-    console.error(err);
-    setStatus("❌ โหลดล้มเหลว", true);
-  });
-} // 🔥 <<< ตรงนี้สำคัญมาก
+  fetch(API + "?sheet=" + sheet)
+    .then(res => res.json())
+    .then(data => {
+      dataAll = data;
+      page = 1;
+      render();
+      setStatus("✅ โหลดสำเร็จ (" + data.length + " รายการ)");
+    })
+    .catch(err => {
+      console.error(err);
+      setStatus("❌ โหลดไม่สำเร็จ", true);
+    });
+}
 
 // ===== RENDER =====
 function render() {
@@ -141,8 +136,8 @@ function render() {
       <div class="card">
         <b>${item.title || item.form_name}</b><br>
         <small>${item.date || ""}</small><br>
-        <button onclick="edit(${item.id})">✏️ แก้ไข</button>
-        <button onclick="del(${item.id})">❌ ลบ</button>
+        <button onclick="edit(${item.id})">✏️</button>
+        <button onclick="del(${item.id})">❌</button>
       </div>
     `;
   });
@@ -156,8 +151,6 @@ function save() {
   const sheet = document.getElementById("sheet").value;
   const file = document.getElementById("image").files[0];
 
-  setStatus("📤 กำลังบันทึก...");
-
   const data = {
     sheet: sheet,
     action: editId ? "update" : "create",
@@ -170,15 +163,11 @@ function save() {
   };
 
   if (file) {
-    setStatus("🖼️ กำลังแปลงรูป...");
-
     const reader = new FileReader();
     reader.onload = function() {
       const base64 = reader.result.split(",")[1];
       data.cover_image_base64 = base64;
       data.image_base64 = base64;
-
-      setStatus("📤 กำลังอัปโหลดรูป...");
       send(data);
     };
     reader.readAsDataURL(file);
@@ -189,10 +178,15 @@ function save() {
 
 // ===== SEND =====
 function send(data) {
-fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(API), {
-  method: "POST",
-  body: JSON.stringify(data)
-})
+  setStatus("📤 กำลังบันทึก...");
+
+  fetch(API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain"
+    },
+    body: JSON.stringify(data)
+  })
   .then(res => res.json())
   .then(res => {
     console.log(res);
@@ -200,7 +194,7 @@ fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(API), {
     if (res.status) {
       setStatus("✅ บันทึกสำเร็จ");
     } else {
-      setStatus("⚠️ API ตอบกลับผิดปกติ", true);
+      setStatus("⚠️ API ผิดปกติ", true);
     }
 
     resetForm();
@@ -208,18 +202,19 @@ fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(API), {
   })
   .catch(err => {
     console.error(err);
-    setStatus("❌ ส่งข้อมูลล้มเหลว", true);
+    setStatus("❌ ส่งข้อมูลไม่สำเร็จ", true);
   });
 }
 
 // ===== DELETE =====
 function del(id) {
-  if (!confirm("ลบข้อมูลนี้หรือไม่?")) return;
-
-  setStatus("🗑️ กำลังลบ...");
+  if (!confirm("ลบข้อมูลหรือไม่?")) return;
 
   fetch(API, {
     method: "POST",
+    headers: {
+      "Content-Type": "text/plain"
+    },
     body: JSON.stringify({
       sheet: document.getElementById("sheet").value,
       action: "delete",
@@ -229,8 +224,7 @@ function del(id) {
   .then(() => {
     setStatus("✅ ลบสำเร็จ");
     load();
-  })
-  .catch(() => setStatus("❌ ลบไม่สำเร็จ", true));
+  });
 }
 
 // ===== EDIT =====
@@ -244,7 +238,7 @@ function edit(id) {
   document.getElementById("form_type").value = item.form_type || "";
   document.getElementById("file_url").value = item.file_url || "";
 
-  setStatus("✏️ กำลังแก้ไข ID: " + id);
+  setStatus("✏️ กำลังแก้ไข");
 }
 
 // ===== RESET =====
